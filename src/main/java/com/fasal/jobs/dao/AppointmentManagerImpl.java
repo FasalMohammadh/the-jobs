@@ -56,11 +56,11 @@ public class AppointmentManagerImpl implements AppointmentManager {
 	}
 
 	@Override
-	public boolean delete(int id) throws SQLException, ClassNotFoundException {
+	public boolean delete(String id) throws SQLException, ClassNotFoundException {
 		Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
 		String query = "DELETE FROM appointment WHERE id=?";
 		PreparedStatement deleteStatement = connection.prepareStatement(query);
-		deleteStatement.setInt(1, id);
+		deleteStatement.setString(1, id);
 
 		int result = deleteStatement.executeUpdate();
 		deleteStatement.close();
@@ -70,18 +70,18 @@ public class AppointmentManagerImpl implements AppointmentManager {
 	}
 
 	@Override
-	public Appointment findUnique(int appointmentId) throws ClassNotFoundException, SQLException {
+	public Appointment findUnique(String appointmentId) throws ClassNotFoundException, SQLException {
 		Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
 		String query = "SELECT * FROM appointment WHERE id=?";
 		PreparedStatement findStatement = connection.prepareStatement(query);
 
-		findStatement.setInt(1, appointmentId);
+		findStatement.setString(1, appointmentId);
 		ResultSet result = findStatement.executeQuery();
 
 		Appointment appointment = null;
 		if (result.next())
 			appointment = new Appointment(
-					result.getInt("id"), result.getDate("date_time"), result.getString("consultant_id"),
+					result.getString("id"), result.getDate("date_time"), result.getString("consultant_id"),
 					result.getString("job_seeker_id"),
 					result.getString("country"), result.getString("job"),
 					result.getDate("createdAt"), AppointmentStatus.valueOf(result.getString("status")));
@@ -103,7 +103,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
 		List<Appointment> appointmentList = new ArrayList<Appointment>();
 		while (result.next()) {
 			Appointment appointment = new Appointment(
-					result.getInt("id"), result.getDate("date_time"), result.getString("consultant_id"),
+					result.getString("id"), result.getDate("date_time"), result.getString("consultant_id"),
 					result.getString("job_seeker_id"),
 					result.getString("country"), result.getString("job"),
 					result.getDate("createdAt"), AppointmentStatus.valueOf(result.getString("status")));
@@ -124,7 +124,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
 		PreparedStatement updateStatement = connection.prepareStatement(query);
 
 		updateStatement.setString(1, appointment.getStatus().toString());
-		updateStatement.setInt(2, appointment.getId());
+		updateStatement.setString(2, appointment.getId());
 
 		int result = updateStatement.executeUpdate();
 		updateStatement.close();

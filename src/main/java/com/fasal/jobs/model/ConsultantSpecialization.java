@@ -1,21 +1,21 @@
 package com.fasal.jobs.model;
 
 public class ConsultantSpecialization {
-  private int id;
+  private String id;
   private String country;
   private String job;
 
-  public ConsultantSpecialization(int id, String country, String job) {
+  public ConsultantSpecialization(String id, String country, String job) {
     this.id = id;
     this.country = country;
     this.job = job;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 

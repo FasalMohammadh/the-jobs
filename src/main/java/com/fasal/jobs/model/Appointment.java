@@ -5,12 +5,16 @@ import java.sql.Date;
 import com.fasal.jobs.enums.AppointmentStatus;
 
 public class Appointment {
-	private int id;
-	private String consultantId, jobSeekerId, country, job;
-	private Date dateTime, createdAt;
+	private String id;
+	private String consultantId;
+	private String jobSeekerId;
+	private String country;
+	private String job;
+	private Date dateTime;
+	private Date createdAt;
 	private AppointmentStatus status;
 
-	public Appointment(int id, Date dateTime, String consultantId, String jobSeekerId, String country, String job,
+	public Appointment(String id, Date dateTime, String consultantId, String jobSeekerId, String country, String job,
 			Date createdAt, AppointmentStatus status) {
 		this.id = id;
 		this.dateTime = dateTime;
@@ -22,11 +26,11 @@ public class Appointment {
 		this.status = status;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
