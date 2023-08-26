@@ -1,25 +1,25 @@
 package com.fasal.jobs.model;
 
 public class JobSeeker extends Person {
-	private int id;
+	private String id;
 	private String email;
 	private String phoneNumber;
 	private String createdAt;
 
-	public JobSeeker(int id, String email, String phoneNumber, String firstName, String lastName, String createdAt) {
+	public JobSeeker(String id, String email, String phoneNumber, String firstName, String lastName, String createdAt) {
+		super(firstName, lastName);
+
 		this.id = id;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
-		this.firstName = firstName;
-		this.lastName = lastName;
 		this.createdAt = createdAt;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -46,4 +46,5 @@ public class JobSeeker extends Person {
 	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
 	}
+
 }

@@ -51,12 +51,12 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
   }
 
   @Override
-  public boolean delete(int jobSeekerId) throws ClassNotFoundException, SQLException {
+  public boolean delete(String jobSeekerId) throws ClassNotFoundException, SQLException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
     String query = "Delete FROM employee WHERE id=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
 
-    deleteStatement.setInt(1, jobSeekerId);
+    deleteStatement.setString(1, jobSeekerId);
 
     int result = deleteStatement.executeUpdate();
     deleteStatement.close();
@@ -66,17 +66,17 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
   }
 
   @Override
-  public JobSeeker findUnique(int jobSeekerId) throws ClassNotFoundException, SQLException {
+  public JobSeeker findUnique(String jobSeekerId) throws ClassNotFoundException, SQLException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
     String query = "SELECT * FROM job_seeker WHERE id=?";
     PreparedStatement findStatement = connection.prepareStatement(query);
 
-    findStatement.setInt(1, jobSeekerId);
+    findStatement.setString(1, jobSeekerId);
     ResultSet result = findStatement.executeQuery();
 
     JobSeeker jobSeeker = null;
     if (result.next())
-      jobSeeker = new JobSeeker(result.getInt("id"), result.getString("email"), result.getString("phoneNumber"),
+      jobSeeker = new JobSeeker(result.getString("id"), result.getString("email"), result.getString("phoneNumber"),
           result.getString("first_name"), result.getString("last_name"), result.getString("created_at"));
 
     result.close();
@@ -95,7 +95,7 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
     ResultSet result = findStatement.executeQuery(query);
     List<JobSeeker> jobSeekerList = new ArrayList<JobSeeker>();
     while (result.next()) {
-      JobSeeker jobSeeker = new JobSeeker(result.getInt("id"), result.getString("email"),
+      JobSeeker jobSeeker = new JobSeeker(result.getString("id"), result.getString("email"),
           result.getString("phoneNumber"),
           result.getString("first_name"), result.getString("last_name"), result.getString("created_at"));
 

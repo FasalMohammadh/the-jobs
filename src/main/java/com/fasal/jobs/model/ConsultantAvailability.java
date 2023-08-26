@@ -3,23 +3,23 @@ package com.fasal.jobs.model;
 import com.fasal.jobs.enums.Day;
 
 public class ConsultantAvailability {
-  private int id;
+  private String id;
   private Day day;
   private String startTime;
   private String endTime;
 
-  public ConsultantAvailability(int id, Day day, String startTime, String endTime) {
+  public ConsultantAvailability(String id, Day day, String startTime, String endTime) {
     this.id = id;
     this.day = day;
     this.startTime = startTime;
     this.endTime = endTime;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 

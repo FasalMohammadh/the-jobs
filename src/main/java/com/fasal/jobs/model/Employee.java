@@ -1,23 +1,28 @@
 package com.fasal.jobs.model;
 
 public class Employee extends Person {
-  private int id;
+  private String id;
   private String role;
   private String createdAt;
   private String email;
+  private String password;
 
-  public Employee(int id, String role, String createdAt, String email) {
+  public Employee(String id, String firstName, String lastName, String email, String password, String role,
+      String createdAt) {
+    super(firstName, lastName);
+
     this.id = id;
     this.role = role;
-    this.createdAt = createdAt;
     this.email = email;
+    this.password = password;
+    this.createdAt = createdAt;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -43,5 +48,13 @@ public class Employee extends Person {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 }

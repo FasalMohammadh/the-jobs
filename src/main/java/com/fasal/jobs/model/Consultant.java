@@ -1,17 +1,32 @@
 package com.fasal.jobs.model;
 
 import java.util.List;
+import java.time.LocalDate;
 
 public class Consultant extends Person {
-  private int id;
+  private String id;
   private String email;
   private String phoneNumber;
-  private String createdAt;
+  private LocalDate createdAt;
   private List<ConsultantAvailability> availability;
   private List<ConsultantSpecialization> specialization;
 
-  public Consultant(int id, String email, String phoneNumber, String createdAt,
+  public Consultant(String id, String email, String phoneNumber, String firstName, String lastName,
       List<ConsultantAvailability> availability, List<ConsultantSpecialization> specialization) {
+    super(firstName, lastName);
+
+    this.id = id;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.availability = availability;
+    this.specialization = specialization;
+
+  }
+
+  public Consultant(String id, String email, String phoneNumber, String firstName, String lastName, LocalDate createdAt,
+      List<ConsultantAvailability> availability, List<ConsultantSpecialization> specialization) {
+    super(firstName, lastName);
+
     this.id = id;
     this.email = email;
     this.phoneNumber = phoneNumber;
@@ -20,11 +35,11 @@ public class Consultant extends Person {
     this.specialization = specialization;
   }
 
-  public int getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -44,11 +59,11 @@ public class Consultant extends Person {
     this.phoneNumber = phoneNumber;
   }
 
-  public String getCreatedAt() {
+  public LocalDate getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(String createdAt) {
+  public void setCreatedAt(LocalDate createdAt) {
     this.createdAt = createdAt;
   }
 
