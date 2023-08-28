@@ -2,6 +2,7 @@ package com.fasal.jobs.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,25 +11,23 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fasal.jobs.enums.ActionType;
-import com.fasal.jobs.enums.AppointmentStatus;
+import com.fasal.jobs.enums.Day;
 import com.fasal.jobs.model.Consultant;
 import com.fasal.jobs.model.ConsultantAvailability;
-import com.fasal.jobs.model.ConsultantSpecialization;
 import com.fasal.jobs.service.ConsultantService;
 
 public class ConsultantController extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    ActionType actionType = ActionType.valueOf(request.getParameter("actionType"));
-    switch (actionType) {
-      case GET:
-        getConsultant(request, response);
-        break;
-      default:
-        getConsultants(request, response);
-    }
+    String actionTypeRaw = request.getParameter("actionType");
+    ActionType actionType = actionTypeRaw == null ? null : ActionType.valueOf(request.getParameter("actionType"));
+    if (actionType == ActionType.GET)
+      getConsultant(request, response);
+    else
+      getConsultants(request, response);
   }
 
   @Override
@@ -47,69 +46,119 @@ public class ConsultantController extends HttpServlet {
     }
   }
 
-  private void createConsultant(HttpServletRequest request, HttpServletResponse response) {
+  private void createConsultant(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String feedback = null;
+    boolean hasErrored = false;
     try {
-      String id = request.getParameter("id");
+      String id = UUID.randomUUID().toString();
       String email = request.getParameter("email");
       String phoneNumber = request.getParameter("phoneNumber");
       String firstName = request.getParameter("firstName");
       String lastName = request.getParameter("lastName");
-      // List<ConsultantAvailability> availability,
-      // List<ConsultantSpecialization> specialization
+      String country = request.getParameter("country");
+      String job = request.getParameter("job");
+      List<ConsultantAvailability> availability = new ArrayList<>();
 
-      Consultant consultant = new Consultant(id, email, phoneNumber, firstName, lastName);
+      String[] availableDays = request.getParameterValues("day[]");
+      String[] startTime = request.getParameterValues("startTime[]");
+      String[] endTime = request.getParameterValues("endTime[]");
+
+      for (int i = 0; i < availableDays.length; i++) {
+        String consultantAvailabilityId = UUID.randomUUID().toString();
+        ConsultantAvailability consultantAvailability = new ConsultantAvailability(consultantAvailabilityId, Day.valueOf(availableDays[i]), startTime[i], endTime[i]);
+        availability.add(consultantAvailability);
+      }
+
+      Consultant consultant = new Consultant(id, email, phoneNumber, firstName, lastName, availability
+              , country, job);
       boolean isCreated = ConsultantService.getService().create(consultant);
 
-      if (isCreated) {
-
-      } else {
-
+      if (!isCreated) {
+        hasErrored = true;
+        feedback = "Something went wrong, Failed to create.";
       }
     } catch (ClassNotFoundException | SQLException e) {
+      hasErrored = true;
+      feedback = "Something went wrong, Failed to create.";
       e.printStackTrace();
+    } finally {
+      if (hasErrored) {
+        HttpSession session = request.getSession();
+        session.setAttribute("feedback", feedback);
+      }
+      response.sendRedirect("consultant");
     }
   }
 
-  private void updateConsultant(HttpServletRequest request, HttpServletResponse response) {
+  private void updateConsultant(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    boolean hasErrored = false;
+    String feedback = null;
     try {
       String id = request.getParameter("id");
       String email = request.getParameter("email");
       String phoneNumber = request.getParameter("phoneNumber");
       String firstName = request.getParameter("firstName");
       String lastName = request.getParameter("lastName");
-      // List<ConsultantAvailability> availability,
-      // List<ConsultantSpecialization> specialization
+      String country = request.getParameter("country");
+      String job = request.getParameter("job");
+      List<ConsultantAvailability> availability = new ArrayList<>();
 
-      Consultant consultant = new Consultant(id, email, phoneNumber, firstName, lastName);
+      String[] availableDays = request.getParameterValues("day[]");
+      String[] startTime = request.getParameterValues("startTime[]");
+      String[] endTime = request.getParameterValues("endTime[]");
+
+      for (int i = 0; i < availableDays.length; i++) {
+        String consultantAvailabilityId = UUID.randomUUID().toString();
+        ConsultantAvailability consultantAvailability = new ConsultantAvailability(consultantAvailabilityId, Day.valueOf(availableDays[i]), startTime[i], endTime[i]);
+        availability.add(consultantAvailability);
+      }
+
+      Consultant consultant = new Consultant(id, email, phoneNumber, firstName, lastName, availability
+              , country, job);
 
       boolean isUpdated = ConsultantService.getService().update(consultant);
-      if (isUpdated) {
-
-      } else {
-
+      if (!isUpdated) {
+        hasErrored = true;
+        feedback = "Something went wrong, Failed to update.";
       }
     } catch (ClassNotFoundException | SQLException e) {
+      hasErrored = true;
+      feedback = "Something went wrong, Failed to update.";
       e.printStackTrace();
+    } finally {
+      if (hasErrored) {
+        HttpSession session = request.getSession();
+        session.setAttribute("feedback", feedback);
+      }
+      response.sendRedirect("consultant");
     }
   }
 
-  private void deleteConsultant(HttpServletRequest request, HttpServletResponse response) {
+  private void deleteConsultant(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String feedback = null;
+    boolean hasErrored = false;
     try {
       String id = request.getParameter("id");
       boolean isDeleted = ConsultantService.getService().delete(id);
-
-      if (isDeleted) {
-
-      } else {
-
+      if (!isDeleted) {
+        hasErrored = true;
+        feedback = "Something went wrong, Failed to delete.";
       }
     } catch (ClassNotFoundException | SQLException e) {
+      hasErrored = true;
+      feedback = "Something went wrong, Failed to delete.";
       e.printStackTrace();
+    } finally {
+      if (hasErrored) {
+        HttpSession session = request.getSession();
+        session.setAttribute("feedback", feedback);
+      }
+      response.sendRedirect("consultant");
     }
   }
 
   private void getConsultant(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+          throws ServletException, IOException {
     String consultantId = request.getParameter("consultantId");
 
     try {
@@ -124,15 +173,17 @@ public class ConsultantController extends HttpServlet {
   }
 
   private void getConsultants(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    List<Consultant> consultants;
+          throws ServletException, IOException {
+    HttpSession session = request.getSession();
     try {
-      consultants = ConsultantService.getService().findMany();
-      request.setAttribute("consultants", consultants);
+      List<Consultant> consultants = ConsultantService.getService().findMany();
+      request.setAttribute("consultants", consultants.isEmpty() ? null : consultants);
       RequestDispatcher requestDispatcher = request.getRequestDispatcher("consultant.jsp");
       requestDispatcher.forward(request, response);
     } catch (ClassNotFoundException | SQLException exception) {
       exception.printStackTrace();
+    } finally {
+      session.removeAttribute("feedback");
     }
   }
 }

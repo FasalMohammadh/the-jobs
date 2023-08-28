@@ -17,13 +17,14 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
   @Override
   public boolean create(JobSeeker jobSeeker) throws ClassNotFoundException, SQLException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String query = "INSERT INTO employee (first_name,last_name,email,phone_number)  VALUES (?,?,?,?);";
+    String query = "INSERT INTO job_seeker (id,first_name,last_name,email,phone_number)  VALUES (?,?,?,?,?);";
     PreparedStatement createStatement = connection.prepareStatement(query);
 
-    createStatement.setString(1, jobSeeker.getFirstName());
-    createStatement.setString(2, jobSeeker.getLastName());
-    createStatement.setString(3, jobSeeker.getEmail());
-    createStatement.setString(4, jobSeeker.getPhoneNumber());
+    createStatement.setString(1, jobSeeker.getId());
+    createStatement.setString(2, jobSeeker.getFirstName());
+    createStatement.setString(3, jobSeeker.getLastName());
+    createStatement.setString(4, jobSeeker.getEmail());
+    createStatement.setString(5, jobSeeker.getPhoneNumber());
 
     int result = createStatement.executeUpdate();
     createStatement.close();
@@ -35,13 +36,14 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
   @Override
   public boolean update(JobSeeker jobSeeker) throws ClassNotFoundException, SQLException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String query = "UPDATE employee SET first_name=?,last_name=?,email=?,phone_number=? WHERE id=?";
+    String query = "UPDATE job_seeker SET first_name=?,last_name=?,email=?,phone_number=? WHERE id=?";
     PreparedStatement updateStatement = connection.prepareStatement(query);
 
     updateStatement.setString(1, jobSeeker.getFirstName());
     updateStatement.setString(2, jobSeeker.getLastName());
     updateStatement.setString(3, jobSeeker.getEmail());
     updateStatement.setString(4, jobSeeker.getPhoneNumber());
+    updateStatement.setString(5, jobSeeker.getId());
 
     int result = updateStatement.executeUpdate();
     updateStatement.close();
@@ -53,7 +55,7 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
   @Override
   public boolean delete(String jobSeekerId) throws ClassNotFoundException, SQLException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String query = "Delete FROM employee WHERE id=?";
+    String query = "Delete FROM job_seeker WHERE id=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
 
     deleteStatement.setString(1, jobSeekerId);
@@ -77,7 +79,7 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
     JobSeeker jobSeeker = null;
     if (result.next())
       jobSeeker = new JobSeeker(result.getString("id"), result.getString("email"), result.getString("phoneNumber"),
-          result.getString("first_name"), result.getString("last_name"), result.getString("created_at"));
+              result.getString("first_name"), result.getString("last_name"), result.getString("created_at"));
 
     result.close();
     findStatement.close();
@@ -93,11 +95,11 @@ public class JobSeekerManagerImpl implements JobSeekerManager {
     Statement findStatement = connection.createStatement();
 
     ResultSet result = findStatement.executeQuery(query);
-    List<JobSeeker> jobSeekerList = new ArrayList<JobSeeker>();
+    List<JobSeeker> jobSeekerList = new ArrayList<>();
     while (result.next()) {
       JobSeeker jobSeeker = new JobSeeker(result.getString("id"), result.getString("email"),
-          result.getString("phoneNumber"),
-          result.getString("first_name"), result.getString("last_name"), result.getString("created_at"));
+              result.getString("phone_number"),
+              result.getString("first_name"), result.getString("last_name"), result.getString("created_at"));
 
       jobSeekerList.add(jobSeeker);
     }
