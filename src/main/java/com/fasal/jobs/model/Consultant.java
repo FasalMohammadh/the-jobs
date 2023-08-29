@@ -7,24 +7,25 @@ public class Consultant extends Person {
   private String id;
   private String email;
   private String phoneNumber;
+  private String country;
+  private String job;
   private LocalDate createdAt;
   private List<ConsultantAvailability> availability;
-  private List<ConsultantSpecialization> specialization;
 
   public Consultant(String id, String email, String phoneNumber, String firstName, String lastName,
-      List<ConsultantAvailability> availability, List<ConsultantSpecialization> specialization) {
+                    List<ConsultantAvailability> availability, String country, String job) {
     super(firstName, lastName);
 
     this.id = id;
     this.email = email;
     this.phoneNumber = phoneNumber;
     this.availability = availability;
-    this.specialization = specialization;
-
+    this.country = country;
+    this.job = job;
   }
 
   public Consultant(String id, String email, String phoneNumber, String firstName, String lastName, LocalDate createdAt,
-      List<ConsultantAvailability> availability, List<ConsultantSpecialization> specialization) {
+                    List<ConsultantAvailability> availability, String country, String job) {
     super(firstName, lastName);
 
     this.id = id;
@@ -32,7 +33,8 @@ public class Consultant extends Person {
     this.phoneNumber = phoneNumber;
     this.createdAt = createdAt;
     this.availability = availability;
-    this.specialization = specialization;
+    this.country = country;
+    this.job = job;
   }
 
   public String getId() {
@@ -75,12 +77,19 @@ public class Consultant extends Person {
     this.availability = availability;
   }
 
-  public List<ConsultantSpecialization> getSpecialization() {
-    return specialization;
+  public String getCountry() {
+    return country;
   }
 
-  public void setSpecialization(List<ConsultantSpecialization> specialization) {
-    this.specialization = specialization;
+  public void setCountry(String country) {
+    this.country = country;
   }
 
+  public String getJob() {
+    return job;
+  }
+
+  public void setJob(String job) {
+    this.job = job;
+  }
 }

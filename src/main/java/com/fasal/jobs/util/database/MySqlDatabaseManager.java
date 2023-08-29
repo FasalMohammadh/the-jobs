@@ -6,17 +6,19 @@ import java.sql.SQLException;
 
 public class MySqlDatabaseManager implements DatabaseManager {
 
-	@Override
-	public Connection getConnection() throws ClassNotFoundException, SQLException {
+  @Override
+  public Connection getConnection() throws ClassNotFoundException, SQLException {
 
-		Class.forName("com.mysql.jdbc.Driver");
+    Class.forName("com.mysql.jdbc.Driver");
 
-		String mysqlDatabaseUrl = PropertyLoader.getMysqlDatabaseUrl();
-		String mysqlDatabaseUsername = PropertyLoader.getMysqlDatabaseUsername();
-		String mysqlDatabasePassword = PropertyLoader.getMysqlDatabasePassword();
+    PropertyLoader propertyLoader = new PropertyLoader();
 
-		return DriverManager.getConnection(mysqlDatabaseUrl, mysqlDatabaseUsername, mysqlDatabasePassword);
+    String mysqlDatabaseUrl = propertyLoader.getMysqlDatabaseUrl();
+    String mysqlDatabaseUsername = propertyLoader.getMysqlDatabaseUsername();
+    String mysqlDatabasePassword = propertyLoader.getMysqlDatabasePassword();
 
-	}
+    return DriverManager.getConnection(mysqlDatabaseUrl, mysqlDatabaseUsername, mysqlDatabasePassword);
+
+  }
 
 }

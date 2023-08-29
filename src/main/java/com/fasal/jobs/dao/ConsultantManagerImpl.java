@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +12,19 @@ import com.fasal.jobs.enums.DatabaseType;
 import com.fasal.jobs.enums.Day;
 import com.fasal.jobs.model.Consultant;
 import com.fasal.jobs.model.ConsultantAvailability;
-import com.fasal.jobs.model.ConsultantSpecialization;
 import com.fasal.jobs.util.database.DatabaseFactory;
 
 public class ConsultantManagerImpl implements ConsultantManager {
+
+  public ConsultantAvailabilityManager getConsultantAvailabilityManager() {
+    return new ConsultantAvailabilityManagerImpl();
+  }
+
   @Override
   public boolean create(Consultant consultant) throws SQLException, ClassNotFoundException {
+
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String query = "INSERT INTO consultant (id, first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?, ?);";
+    String query = "INSERT INTO consultant (id, first_name, last_name, email, phone_number,country,job) VALUES (?, ?, ?, ?, ?,?,?);";
     PreparedStatement createStatement = connection.prepareStatement(query);
 
     createStatement.setString(1, consultant.getId());
@@ -28,8 +32,11 @@ public class ConsultantManagerImpl implements ConsultantManager {
     createStatement.setString(3, consultant.getLastName());
     createStatement.setString(4, consultant.getEmail());
     createStatement.setString(5, consultant.getPhoneNumber());
+    createStatement.setString(6, consultant.getCountry());
+    createStatement.setString(7, consultant.getJob());
 
     int result = createStatement.executeUpdate();
+
     createStatement.close();
     connection.close();
 
@@ -80,19 +87,14 @@ public class ConsultantManagerImpl implements ConsultantManager {
 
     Consultant consultant = null;
     if (result.next()) {
-      List<ConsultantSpecialization> consultantSpecializations = new ArrayList<>();
-      ConsultantSpecialization consultantSpecialization = new ConsultantSpecialization(
-          result.getString("specialization_id"), result.getString("country"), result.getString("job"));
-      consultantSpecializations.add(consultantSpecialization);
-
       List<ConsultantAvailability> consultantAvailabilities = new ArrayList<>();
       ConsultantAvailability consultantAvailability = new ConsultantAvailability(result.getString("availability_id"),
-          Day.valueOf(result.getString("day")), result.getString("start_time"), result.getString("end_time"));
+              Day.valueOf(result.getString("day")), result.getString("start_time"), result.getString("end_time"));
       consultantAvailabilities.add(consultantAvailability);
 
       consultant = new Consultant(result.getString("id"), result.getString("email"), result.getString("phone_number"),
-          result.getString("firstName"), result.getString("lastName"),
-          consultantAvailabilities, consultantSpecializations);
+              result.getString("firstName"), result.getString("lastName"),
+              consultantAvailabilities, result.getString("country"), result.getString("job"));
     }
 
     result.close();
@@ -105,26 +107,21 @@ public class ConsultantManagerImpl implements ConsultantManager {
   @Override
   public List<Consultant> findMany() throws ClassNotFoundException, SQLException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String storedProcedure = "call FindConsultants()";
+    String storedProcedure = "CALL FindConsultants();";
     CallableStatement findStatement = connection.prepareCall(storedProcedure);
 
     ResultSet result = findStatement.executeQuery(storedProcedure);
     List<Consultant> consultantList = new ArrayList<>();
     while (result.next()) {
-      List<ConsultantSpecialization> consultantSpecializations = new ArrayList<>();
-      ConsultantSpecialization consultantSpecialization = new ConsultantSpecialization(
-          result.getString("specialization_id"), result.getString("country"), result.getString("job"));
-      consultantSpecializations.add(consultantSpecialization);
-
       List<ConsultantAvailability> consultantAvailabilities = new ArrayList<>();
-      ConsultantAvailability consultantAvailability = new ConsultantAvailability(result.getString("availability_id"),
-          Day.valueOf(result.getString("day")), result.getString("start_time"), result.getString("end_time"));
+      ConsultantAvailability consultantAvailability = new ConsultantAvailability(result.getString("consultant_availability_id"),
+              Day.valueOf(result.getString("day")), result.getString("start_time"), result.getString("end_time"));
       consultantAvailabilities.add(consultantAvailability);
 
-      Consultant consultant = new Consultant(result.getString("id"), result.getString("email"),
-          result.getString("phone_number"),
-          result.getString("firstName"), result.getString("lastName"),
-          consultantAvailabilities, consultantSpecializations);
+      Consultant consultant = new Consultant(result.getString("id"), result.getString("email"), result.getString("phone_number"),
+              result.getString("first_name"), result.getString("last_name"),
+              consultantAvailabilities, result.getString("country"), result.getString("job"));
+
       consultantList.add(consultant);
     }
 

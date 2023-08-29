@@ -2,6 +2,7 @@ package com.fasal.jobs.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.RequestDispatcher;
@@ -17,11 +18,13 @@ import com.fasal.jobs.service.AppointmentService;
 
 public class AppointmentController extends HttpServlet {
 
+  private AppointmentService getAppointmentService() {
+    return AppointmentService.getService();
+  }
+
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    RequestDispatcher requestDispatcher = request.getRequestDispatcher("admin-appointment.jsp");
-    requestDispatcher.forward(request, response);
+    getAppointments(request, response);
   }
 
   @Override
@@ -52,9 +55,9 @@ public class AppointmentController extends HttpServlet {
       String job = request.getParameter("job");
 
       Appointment appointment = new Appointment(id, null, consultantId, jobSeekerId, country, job, null,
-          AppointmentStatus.CREATED);
+              AppointmentStatus.CREATED);
 
-      boolean isCreated = AppointmentService.getService().create(appointment);
+      boolean isCreated = getAppointmentService().create(appointment);
       if (isCreated) {
 
       } else {
@@ -76,9 +79,9 @@ public class AppointmentController extends HttpServlet {
       String job = request.getParameter("job");
 
       Appointment appointment = new Appointment(id, null, consultantId, jobSeekerId, country, job, null,
-          AppointmentStatus.CREATED);
+              AppointmentStatus.CREATED);
 
-      boolean isUpdated = AppointmentService.getService().update(appointment);
+      boolean isUpdated = getAppointmentService().update(appointment);
       if (isUpdated) {
 
       } else {
@@ -92,7 +95,7 @@ public class AppointmentController extends HttpServlet {
   private void deleteAppointment(HttpServletRequest request, HttpServletResponse response) {
     try {
       String id = request.getParameter("id");
-      boolean isDeleted = AppointmentService.getService().delete(id);
+      boolean isDeleted = getAppointmentService().delete(id);
 
       if (isDeleted) {
 
@@ -101,6 +104,20 @@ public class AppointmentController extends HttpServlet {
       }
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
+    }
+  }
+
+  private void getAppointments(HttpServletRequest request, HttpServletResponse response)
+          throws ServletException, IOException {
+    try {
+      List<Appointment> appointments;
+      appointments = getAppointmentService().findMany();
+      request.setAttribute("jobSeekers", appointments);
+      RequestDispatcher requestDispatcher = request.getRequestDispatcher("appointment.jsp");
+      requestDispatcher.forward(request, response);
+    } catch (ClassNotFoundException | SQLException exception) {
+      exception.printStackTrace();
+      System.out.println(exception.getMessage());
     }
   }
 }

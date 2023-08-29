@@ -6,33 +6,40 @@ import java.util.Properties;
 
 public class PropertyLoader {
 
-  private static String mysqlDatabaseUrl;
-  private static String mysqlDatabaseUsername;
-  private static String mysqlDatabasePassword;
+  private String mysqlDatabaseUrl;
+  private String mysqlDatabaseUsername;
+  private String mysqlDatabasePassword;
 
-  private PropertyLoader() {
+
+  public PropertyLoader() {
     try {
       Properties configuration = new Properties();
       InputStream inputStream = PropertyLoader.class
-          .getClassLoader()
-          .getResourceAsStream("application.properties");
+              .getClassLoader()
+              .getResourceAsStream("application.properties");
       configuration.load(inputStream);
+
+      mysqlDatabaseUrl = configuration.getProperty("MYSQL_DATABASE_URL");
+      mysqlDatabaseUsername = configuration.getProperty("MYSQL_DATABASE_USER");
+      mysqlDatabasePassword = configuration.getProperty("MYSQL_DATABASE_PASSWORD");
+
       inputStream.close();
     } catch (IOException e) {
       System.err.println(e.getMessage());
     }
   }
 
-  public static String getMysqlDatabaseUrl() {
+
+
+  public String getMysqlDatabaseUrl() {
     return mysqlDatabaseUrl;
   }
 
-  public static String getMysqlDatabaseUsername() {
+  public String getMysqlDatabaseUsername() {
     return mysqlDatabaseUsername;
   }
 
-  public static String getMysqlDatabasePassword() {
+  public String getMysqlDatabasePassword() {
     return mysqlDatabasePassword;
   }
-
 }
