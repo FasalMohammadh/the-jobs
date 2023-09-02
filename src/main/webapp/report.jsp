@@ -57,10 +57,10 @@
             </a>
           </li>
           <li>
-            <a href="report.jsp" class="group">
-              <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
+            <a href="report.jsp" class="active">
+              <i class="bi bi-file-medical text-primary-focus text-2xl w-8 h-8"></i>
               <div>
-                <p class="text-base-content leading-4 group-hover:text-primary">Reports</p>
+                <p class="leading-4 text-primary">Reports</p>
                 <span class="text-sm dark:text-slate-500">Generate Reports</span>
               </div>
             </a>
@@ -78,10 +78,10 @@
           </li>
 
           <li>
-            <a href="job-seeker" class="active">
-              <i class="bi bi-people text-primary-focus text-2xl w-8 h-8"></i>
+            <a href="job-seeker" class="group">
+              <i class="bi bi-people group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <div>
-                <p class="leading-4 text-primary">Job Seekers</p>
+                <p class="text-base-content leading-4 group-hover:text-indigo-600">Job Seekers</p>
                 <span class="text-sm dark:text-slate-500">Manage Job Seekers</span>
               </div>
             </a>
@@ -109,72 +109,39 @@
     <div class="p-10 min-w-0">
       <main>
         <section class="block w-fit ml-auto mb-3">
-          <button id="create-job-seeker" class="btn btn-primary normal-case">
-            <i class="bi bi-plus-circle-fill group-hover:text-indigo-600 text-xl"></i>
-            Create Job Seeker
-          </button>
-        </section>
+          <form action="report">
 
+            <div class="form-control w-full max-w-xs">
+              <label class="label" for="firstName">
+                <span class="label-text">Month</span>
+              </label>
+              <input id="month" name="month" type="text" class="input input-bordered w-full max-w-xs"/>
+              <label class="label">
+                <span class="label-text-alt"></span>
+              </label>
+            </div>
+
+            <div class="form-control w-full max-w-xs">
+              <label class="label" for="lastName">
+                <span class="label-text">Type</span>
+              </label>
+              <input id="type" name="type" type="text" class="input input-bordered w-full max-w-xs"/>
+              <label class="label">
+                <span class="label-text-alt"></span>
+              </label>
+            </div>
+
+            <button id="create-job-seeker" class="btn btn-primary normal-case">
+              Generate Report
+            </button>
+
+          </form>
+        </section>
         <section class="w-full">
           <header class="px-5 py-4">
-            <h2 class="font-semibold text-xl">Job Seekers</h2>
+            <h2 class="font-semibold text-xl">Generated Report</h2>
           </header>
-          <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
-            <table class="table table-zebra" aria-label="job seeker">
-              <thead>
-              <tr>
-                <th>Id</th>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Phone Number</th>
-                <th>Created At</th>
-                <th class="sr-only">Edit</th>
-                <th class="sr-only">Delete</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tag:if test="${jobSeekers==null}">
-                <tr>
-                  <td colspan="7" class="text-center">No records found.</td>
-                </tr>
-              </tag:if>
-              <tag:if test="${jobSeekers!=null}">
-                <tag:forEach var="jobSeeker" items="${jobSeekers}">
-                  <tr class="whitespace-nowrap">
-                    <td>${jobSeeker.id}</td>
-                    <td>${jobSeeker.firstName} ${jobSeeker.lastName}</td>
-                    <td>${jobSeeker.email}</td>
-                    <td>${jobSeeker.phoneNumber}</td>
-                    <td>${jobSeeker.createdAt}</td>
-                    <td>
-                      <div class="inline-flex gap-2 items-center">
-                        <div class="tooltip tooltip-top" data-tip="Edit">
-                          <button
-                            data-action="edit"
-                            data-record='{ "id":"${jobSeeker.id}", "firstName":"${jobSeeker.firstName}", "lastName":"${jobSeeker.lastName}", "email":"${jobSeeker.email}", "phoneNumber":"${jobSeeker.phoneNumber}"}'
-                            aria-label="edit"
-                            class="btn btn-circle flex items-center justify-center aspect-square h-10 rounded-full border p-1">
-                            <i class="bi bi-pencil text-lg"></i>
-                          </button>
-                        </div>
 
-                        <div class="tooltip tooltip-top" data-tip="Delete">
-                          <button
-                            data-action="delete"
-                            data-record='{"id":"${jobSeeker.id}"}'
-                            aria-label="delete"
-                            class="btn btn-circle flex items-center justify-center aspect-square h-10 rounded-full border p-1">
-                            <i class="bi bi-trash text-lg"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tag:forEach>
-              </tag:if>
-              </tbody>
-            </table>
-          </div>
         </section>
       </main>
     </div>
@@ -215,10 +182,10 @@
           </a>
         </li>
         <li>
-          <a href="report.jsp" class="group">
-            <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
+          <a href="report.jsp" class="active">
+            <i class="bi bi-file-medical text-primary-focus text-2xl w-8 h-8"></i>
             <div>
-              <p class="text-base-content leading-4 group-hover:text-primary">Reports</p>
+              <p class="leading-4 text-primary">Reports</p>
               <span class="text-sm dark:text-slate-500">Generate Reports</span>
             </div>
           </a>
@@ -234,10 +201,10 @@
         </li>
 
         <li>
-          <a href="job-seeker" class="active">
-            <i class="bi bi-people text-primary-focus text-2xl w-8 h-8"></i>
+          <a href="job-seeker" class="group">
+            <i class="bi bi-people group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <div>
-              <p class="leading-4 text-primary">Job Seekers</p>
+              <p class="text-base-content leading-4 group-hover:text-indigo-600">Job Seekers</p>
               <span class="text-sm dark:text-slate-500">Manage Job Seekers</span>
             </div>
           </a>
@@ -263,24 +230,6 @@
   </aside>
 </div>
 
-<dialog id="confirmationDialog" class="modal">
-  <form name="appointmentDeleteForm" class="modal-box" action="job-seeker" method="post">
-    <input type="hidden" name="id"/>
-    <input type="hidden" name="actionType" value="DELETE"/>
-
-    <h3 class="font-bold text-lg">Delete Confirmation</h3>
-    <p class="py-4">
-      Are you sure you want to delete this jobseeker <br/> <span id="displayId"></span> ?
-    </p>
-    <div class="ml-auto inline-flex gap-2">
-      <button class="btn btn-primary">Confirm</button>
-      <button formmethod="dialog" class="btn btn-neutral">Cancel</button>
-    </div>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
 
 <dialog id="appointmentDialog" class="modal">
   <form
@@ -346,19 +295,19 @@
 </dialog>
 
 <script defer type="module">
-    import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';
+  import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';
 
-    const feedback = "${feedback}";
-    if (feedback) {
-        document.addEventListener('DOMContentLoaded', () => {
-            Swal.fire({
-                title: 'Operation Failed.',
-                text: feedback,
-                icon: 'error',
-                confirmButtonText: 'Close'
-            })
-        })
-    }
+  const feedback = "${feedback}";
+  if (feedback) {
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+        title: 'Operation Failed.',
+        text: feedback,
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+    })
+  }
 </script>
 </body>
 </html>

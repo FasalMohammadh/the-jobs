@@ -2,6 +2,7 @@ package com.fasal.jobs.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,16 +11,34 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fasal.jobs.enums.ActionType;
 import com.fasal.jobs.enums.AppointmentStatus;
 import com.fasal.jobs.model.Appointment;
+import com.fasal.jobs.model.Consultant;
+import com.fasal.jobs.model.JobSeeker;
 import com.fasal.jobs.service.AppointmentService;
+import com.fasal.jobs.service.ConsultantService;
+import com.fasal.jobs.service.JobSeekerService;
+import com.fasal.jobs.util.helper.Helper;
 
 public class AppointmentController extends HttpServlet {
 
   private AppointmentService getAppointmentService() {
     return AppointmentService.getService();
+  }
+
+  private ConsultantService getConsultantService() {
+    return ConsultantService.getService();
+  }
+
+  private JobSeekerService getJobSeekerService() {
+    return JobSeekerService.getService();
+  }
+
+  private boolean checkIsAuthorized(HttpSession session) throws SQLException, ClassNotFoundException {
+    return Helper.getHelper().isAuthorized(session);
   }
 
   @Override
@@ -28,7 +47,7 @@ public class AppointmentController extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     ActionType actionType = ActionType.valueOf(request.getParameter("actionType"));
     switch (actionType) {
       case CREATE:
@@ -40,84 +59,154 @@ public class AppointmentController extends HttpServlet {
       case DELETE:
         deleteAppointment(request, response);
         break;
+      // no default
     }
   }
 
-  private void createAppointment(HttpServletRequest request, HttpServletResponse response) {
+  private void createAppointment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String feedback = null;
+    boolean hasErrored = false;
     try {
-      String id = UUID.randomUUID().toString();
+      boolean isAuthorized = checkIsAuthorized(request.getSession());
 
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
+      String id = UUID.randomUUID().toString();
       String date = request.getParameter("date");
       String time = request.getParameter("time");
-      String consultantId = request.getParameter("consultantId");
-      String jobSeekerId = request.getParameter("jobSeekerId");
+      String consultantId = request.getParameter("consultant");
+      String jobSeekerId = request.getParameter("jobSeeker");
       String country = request.getParameter("country");
       String job = request.getParameter("job");
 
-      Appointment appointment = new Appointment(id, null, consultantId, jobSeekerId, country, job, null,
+      LocalDateTime dateTime = Helper.getHelper().toLocalDateTime(date, time);
+
+      Appointment appointment = new Appointment(id, dateTime, consultantId, jobSeekerId, country, job, null,
               AppointmentStatus.CREATED);
 
       boolean isCreated = getAppointmentService().create(appointment);
-      if (isCreated) {
-
-      } else {
-
+      if (!isCreated) {
+        hasErrored = true;
+        feedback = "Something went wrong, Failed to create.";
       }
     } catch (ClassNotFoundException | SQLException e) {
+      hasErrored = true;
+      feedback = "Something went wrong, Failed to create.";
       e.printStackTrace();
+    } finally {
+      if (hasErrored) {
+        HttpSession session = request.getSession();
+        session.setAttribute("feedback", feedback);
+      }
+      response.sendRedirect("appointment");
     }
   }
 
-  private void updateAppointment(HttpServletRequest request, HttpServletResponse response) {
+  private void updateAppointment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String feedback = null;
+    boolean hasErrored = false;
+
     try {
-      String id = UUID.randomUUID().toString();
+      boolean isAuthorized = checkIsAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
+      String id = request.getParameter("id");
       String date = request.getParameter("date");
       String time = request.getParameter("time");
-      String consultantId = request.getParameter("consultantId");
-      String jobSeekerId = request.getParameter("jobSeekerId");
+      String consultantId = request.getParameter("consultant");
+      String jobSeekerId = request.getParameter("jobSeeker");
       String country = request.getParameter("country");
       String job = request.getParameter("job");
+      AppointmentStatus status = AppointmentStatus.valueOf(request.getParameter("status"));
 
-      Appointment appointment = new Appointment(id, null, consultantId, jobSeekerId, country, job, null,
-              AppointmentStatus.CREATED);
+      LocalDateTime dateTime = Helper.getHelper().toLocalDateTime(date, time);
+
+      Appointment appointment = new Appointment(id, dateTime, consultantId, jobSeekerId, country, job, null,
+              status);
 
       boolean isUpdated = getAppointmentService().update(appointment);
-      if (isUpdated) {
-
-      } else {
-
+      if (!isUpdated) {
+        hasErrored = true;
+        feedback = "Something went wrong, Failed to update.";
       }
     } catch (ClassNotFoundException | SQLException e) {
+      hasErrored = true;
+      feedback = "Something went wrong, Failed to update.";
       e.printStackTrace();
+    } finally {
+      if (hasErrored) {
+        HttpSession session = request.getSession();
+        session.setAttribute("feedback", feedback);
+      }
+      response.sendRedirect("appointment");
     }
   }
 
-  private void deleteAppointment(HttpServletRequest request, HttpServletResponse response) {
+  private void deleteAppointment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String feedback = null;
+    boolean hasErrored = false;
     try {
+      boolean isAuthorized = checkIsAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
       String id = request.getParameter("id");
       boolean isDeleted = getAppointmentService().delete(id);
 
-      if (isDeleted) {
-
-      } else {
-
+      if (!isDeleted) {
+        hasErrored = true;
+        feedback = "Something went wrong, Failed to delete.";
       }
     } catch (ClassNotFoundException | SQLException e) {
+      hasErrored = true;
+      feedback = "Something went wrong, Failed to delete.";
       e.printStackTrace();
+    } finally {
+      if (hasErrored) {
+        HttpSession session = request.getSession();
+        session.setAttribute("feedback", feedback);
+      }
+      response.sendRedirect("appointment");
     }
   }
 
   private void getAppointments(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
+    HttpSession session = request.getSession();
+
     try {
-      List<Appointment> appointments;
-      appointments = getAppointmentService().findMany();
-      request.setAttribute("jobSeekers", appointments);
+      boolean isAuthorized = checkIsAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
+      List<Appointment> appointments = getAppointmentService().findMany();
+      List<Consultant> consultants = getConsultantService().findMany();
+      List<JobSeeker> jobSeekers = getJobSeekerService().findMany();
+
+      request.setAttribute("appointments", appointments);
+      request.setAttribute("consultants", consultants);
+      request.setAttribute("jobSeekers", jobSeekers);
+
       RequestDispatcher requestDispatcher = request.getRequestDispatcher("appointment.jsp");
       requestDispatcher.forward(request, response);
+
     } catch (ClassNotFoundException | SQLException exception) {
       exception.printStackTrace();
-      System.out.println(exception.getMessage());
+    } finally {
+      session.removeAttribute("feedback");
     }
   }
 }

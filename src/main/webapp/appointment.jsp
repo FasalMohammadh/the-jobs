@@ -1,23 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1" isELIgnored="false"%>
+         pageEncoding="ISO-8859-1" isELIgnored="false" %>
 
-<%@ taglib prefix="tag" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="tag" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Manage Consultants</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Manage JobSeekers</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.6.2/dist/full.css" rel="stylesheet" type="text/css" />
-  <link href="./assets/index.css" rel="stylesheet" />
+  <link href="./assets/index.css" rel="stylesheet"/>
   <script src="./assets/index.js" type="module"></script>
   <script src="./assets/appointment.js" type="module"></script>
 </head>
 <body>
 <div class="drawer">
-  <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+  <input id="my-drawer-3" type="checkbox" class="drawer-toggle"/>
   <div class="drawer-content grid grid-flow-row lg:grid-cols-[auto_1fr]">
     <div class="navbar w-fit items-start bg-base-300 h-fit">
       <div class="flex-none lg:hidden">
@@ -35,7 +34,7 @@
           </div>
 
           <label class="swap btn btn-circle" aria-label="theme toggler">
-            <input type="checkbox" data-theme="toggler" />
+            <input type="checkbox" data-theme="toggler"/>
             <i class="bi bi-moon text-xl swap-off"></i>
             <i class="bi bi-sun text-xl swap-on"></i>
           </label>
@@ -44,12 +43,12 @@
         <ul class="menu menu-vertical font-poppins gap-2">
           <li>
             <a href="index.html" class="group">
-              <i class="bi bi-house group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+              <i class="bi bi-house group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <p class="text-base-content leading-4 group-hover:text-primary">Home</p>
             </a>
           </li>
           <li>
-            <a href="appointment.html" class="active">
+            <a href="appointment" class="active">
               <i class="bi bi-file-earmark text-primary-focus text-2xl w-8 h-8"></i>
               <div>
                 <p class="leading-4 text-primary">Appointments</p>
@@ -58,8 +57,8 @@
             </a>
           </li>
           <li>
-            <a href="report.html" class="group">
-              <i class="bi bi-file-medical group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+            <a href="report.jsp" class="group">
+              <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <div>
                 <p class="text-base-content leading-4 group-hover:text-primary">Reports</p>
                 <span class="text-sm dark:text-slate-500">Generate Reports</span>
@@ -67,8 +66,8 @@
             </a>
           </li>
           <li>
-            <a href="consultant.html" class="group">
-              <i class="bi bi-people group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+            <a href="consultant" class="group">
+              <i class="bi bi-people group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <div>
                 <p class="text-base-content leading-4 group-hover:text-indigo-600">
                   Consultants
@@ -77,21 +76,31 @@
               </div>
             </a>
           </li>
+
+          <li>
+            <a href="job-seeker" class="group">
+              <i class="bi bi-people  group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
+              <div>
+                <p class="leading-4 group-hover:text-indigo-600">Job Seekers</p>
+                <span class="text-sm dark:text-slate-500">Manage Job Seekers</span>
+              </div>
+            </a>
+          </li>
         </ul>
         <div class="divider m-2"></div>
         <ul class="menu menu-vertical gap-2">
           <li>
             <a href="setting.html" class="group">
-              <i class="bi bi-gear group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+              <i class="bi bi-gear group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Settings</p>
             </a>
           </li>
           <li>
-            <div>
+            <button class="group" type="submit" form="logout">
               <i
-                class="bi bi-box-arrow-right group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+                class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-            </div>
+            </button>
           </li>
         </ul>
       </div>
@@ -100,7 +109,7 @@
     <div class="p-10 min-w-0">
       <main>
         <section class="block w-fit ml-auto mb-3">
-          <button id="schedule-appointment" class="btn btn-primary normal-case">
+          <button id="create-job-seeker" class="btn btn-primary normal-case">
             <i class="bi bi-plus-circle-fill group-hover:text-indigo-600 text-xl"></i>
             Schedule Appointment
           </button>
@@ -111,7 +120,7 @@
             <h2 class="font-semibold text-xl">Appointments</h2>
           </header>
           <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
-            <table class="table table-zebra" aria-label="appointments">
+            <table class="table table-zebra" aria-label="job seeker">
               <thead>
               <tr>
                 <th>Id</th>
@@ -127,47 +136,46 @@
               </tr>
               </thead>
               <tbody>
-              <tag:forEach var="appointment" items="${appointments}">
+              <tag:if test="${appointments==null}">
                 <tr>
-                  <td>${appointment.id}</td>
-                  <td>${appointment.dateTime}</td>
-                  <td>${appointment.job}</td>
-                  <td>${appointment.country}</td>
-                  <!-- <td>${appointment.job_seeker_id}</td>
-                        <td>${appointment.consultant_id}</td> -->
-                  <td>${appointment.status}</td>
-                  <td>${appointment.created_at}</td>
-                  <td>
-                    <div class="inline-flex gap-2 items-center">
-                      <div class="tooltip tooltip-top" data-tip="Edit">
-                        <button
-                          data-action="edit"
-                          data-record='{
-                                  "id":"${appointment.id}",
-                                  "dateTime": "${appointment.date_time}",
-                                  "job": "${appointment.job}",
-                                  "country": "${appointment.country}",
-                                  "status": "${appointment.status}"
-                                }'
-                          aria-label="edit"
-                          class="btn btn-circle flex items-center justify-center aspect-square h-10 rounded-full border p-1">
-                          <i class="bi bi-pencil text-lg"></i>
-                        </button>
-                      </div>
-
-                      <div class="tooltip tooltip-top" data-tip="Delete">
-                        <button
-                          data-action="delete"
-                          data-record='{"id":"${appointment.id}"}'
-                          aria-label="delete"
-                          class="btn btn-circle flex items-center justify-center aspect-square h-10 rounded-full border p-1">
-                          <i class="bi bi-trash text-lg"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </td>
+                  <td colspan="7" class="text-center">No records found.</td>
                 </tr>
-              </tag:forEach>
+              </tag:if>
+              <tag:if test="${appointments!=null}">
+                <tag:forEach var="appointment" items="${appointments}">
+                  <tr class="whitespace-nowrap">
+                    <td>${appointment.id}</td>
+                    <td>${appointment.dateTime}</td>
+                    <td>${appointment.job}</td>
+                    <td>${appointment.country}</td>
+                    <td>${appointment.status}</td>
+                    <td>${appointment.createdAt}</td>
+                    <td>
+                      <div class="inline-flex gap-2 items-center">
+                        <div class="tooltip tooltip-top" data-tip="Edit">
+                          <button
+                            data-action="edit"
+                            data-record='{ "id":"${appointment.id}", "dateTime":"${appointment.dateTime}", "job":"${appointment.job}", "country":"${appointment.country}","status":"${appointment.status}", "consultantId":"${appointment.consultantId}","jobSeekerId":"${appointment.jobSeekerId}" }'
+                            aria-label="edit"
+                            class="btn btn-circle flex items-center justify-center aspect-square h-10 rounded-full border p-1">
+                            <i class="bi bi-pencil text-lg"></i>
+                          </button>
+                        </div>
+
+                        <div class="tooltip tooltip-top" data-tip="Delete">
+                          <button
+                            data-action="delete"
+                            data-record='{"id":"${appointment.id}"}'
+                            aria-label="delete"
+                            class="btn btn-circle flex items-center justify-center aspect-square h-10 rounded-full border p-1">
+                            <i class="bi bi-trash text-lg"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tag:forEach>
+              </tag:if>
               </tbody>
             </table>
           </div>
@@ -188,7 +196,7 @@
         </div>
 
         <label class="swap btn btn-circle" aria-label="theme-toggler">
-          <input type="checkbox" data-theme="toggler" />
+          <input type="checkbox" data-theme="toggler"/>
           <i class="bi bi-moon text-xl swap-off"></i>
           <i class="bi bi-sun text-xl swap-on"></i>
         </label>
@@ -197,12 +205,12 @@
       <ul class="menu menu-vertical font-poppins gap-2">
         <li>
           <a href="index.html" class="group">
-            <i class="bi bi-house group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+            <i class="bi bi-house group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <p class="text-base-content leading-4 group-hover:text-primary">Home</p>
           </a>
         </li>
         <li>
-          <a href="appointment.html" class="active">
+          <a href="appointment" class="active">
             <i class="bi bi-file-earmark text-primary-focus text-2xl w-8 h-8"></i>
             <div>
               <p class="leading-4 text-primary">Appointments</p>
@@ -211,8 +219,8 @@
           </a>
         </li>
         <li>
-          <a href="report.html" class="group">
-            <i class="bi bi-file-medical group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+          <a href="report.jsp" class="group">
+            <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <div>
               <p class="text-base-content leading-4 group-hover:text-primary">Reports</p>
               <span class="text-sm dark:text-slate-500">Generate Reports</span>
@@ -220,11 +228,21 @@
           </a>
         </li>
         <li>
-          <a href="consultant.html" class="group">
-            <i class="bi bi-people group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+          <a href="consultant" class="group">
+            <i class="bi bi-people group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <div>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Consultants</p>
               <span class="text-sm dark:text-slate-500">Manage Consultants</span>
+            </div>
+          </a>
+        </li>
+
+        <li>
+          <a href="job-seeker" class="group">
+            <i class="bi bi-people  group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
+            <div>
+              <p class="leading-4 group-hover:text-indigo-600">Job Seekers</p>
+              <span class="text-sm dark:text-slate-500">Manage Job Seekers</span>
             </div>
           </a>
         </li>
@@ -233,16 +251,16 @@
       <ul class="menu menu-vertical gap-2">
         <li>
           <a href="setting.html" class="group">
-            <i class="bi bi-gear group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+            <i class="bi bi-gear group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <p class="text-base-content leading-4 group-hover:text-indigo-600">Settings</p>
           </a>
         </li>
         <li>
-          <div class="group">
+          <button class="group" type="submit" form="logout">
             <i
-              class="bi bi-box-arrow-right group-hover:text-primary-focus text-2xl w-8 h-8"></i>
+              class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-          </div>
+          </button>
         </li>
       </ul>
     </div>
@@ -250,13 +268,13 @@
 </div>
 
 <dialog id="confirmationDialog" class="modal">
-  <form name="appointmentDeleteForm" class="modal-box" action="/appointment">
-    <input type="hidden" name="id" />
-    <input type="hidden" name="actionType" value="DELETE" />
+  <form id="appointment-delete-form" name="appointmentDeleteForm" class="modal-box" action="appointment" method="post">
+    <input type="hidden" name="id"/>
+    <input type="hidden" name="actionType" value="DELETE"/>
 
     <h3 class="font-bold text-lg">Delete Confirmation</h3>
     <p class="py-4">
-      Are you sure you want to delete this appointment <span id="displayId"></span> ?
+      Are you sure you want to delete this appointment <br/> <span id="displayId"></span> ?
     </p>
     <div class="ml-auto inline-flex gap-2">
       <button class="btn btn-primary">Confirm</button>
@@ -270,38 +288,39 @@
 
 <dialog id="appointmentDialog" class="modal">
   <form
-    action="/appointment"
-    class="modal-box"
+    action="appointment"
+    class="modal-box max-w-2xl"
     name="appointmentForm"
     id="appointmentForm"
     method="post">
     <h1 class="text-xl font-medium mb-3 font-mont">Appointment Details</h1>
 
-    <div class="grid sm:grid-cols-2 gap-4">
-      <input type="hidden" name="actionType" value="CREATE" />
-      <input type="hidden" name="id" />
 
-      <div class="form-control w-full max-w-xs">
+    <div class="grid sm:grid-cols-2 gap-4">
+      <input type="hidden" name="actionType" value="CREATE"/>
+      <input type="hidden" name="id"/>
+
+      <div class="form-control w-full">
         <label class="label" for="date">
           <span class="label-text">Date</span>
         </label>
-        <input id="date" name="date" type="date" class="input input-bordered w-full max-w-xs" />
+        <input id="date" name="date" type="date" class="input input-bordered w-full"/>
         <label class="label">
           <span class="label-text-alt"></span>
         </label>
       </div>
 
-      <div class="form-control w-full max-w-xs">
+      <div class="form-control w-full">
         <label class="label" for="time">
           <span class="label-text">Time</span>
         </label>
-        <input id="time" name="time" type="time" class="input input-bordered w-full max-w-xs" />
+        <input id="time" name="time" type="time" class="input input-bordered w-full"/>
         <label class="label">
           <span class="label-text-alt"></span>
         </label>
       </div>
 
-      <div class="form-control w-full max-w-xs">
+      <div class="form-control w-full">
         <label class="label" for="country">
           <span class="label-text">Country</span>
         </label>
@@ -310,15 +329,15 @@
           name="country"
           type="text"
           placeholder="Australia"
-          class="input input-bordered w-full max-w-xs"
-          list="countryList" />
+          class="input input-bordered w-full"
+          list="countryList"/>
         <datalist id="countryList"></datalist>
         <label class="label">
           <span class="label-text-alt"></span>
         </label>
       </div>
 
-      <div class="form-control w-full max-w-xs">
+      <div class="form-control w-full">
         <label class="label" for="job">
           <span class="label-text">Job</span>
         </label>
@@ -327,7 +346,7 @@
           name="job"
           type="text"
           placeholder="Job"
-          class="input input-bordered w-full max-w-xs" />
+          class="input input-bordered w-full"/>
         <label class="label">
           <span class="label-text-alt"></span>
         </label>
@@ -342,7 +361,11 @@
           class="select select-bordered w-full"
           name="consultant"
           id="consultant">
-          <option value=""></option>
+          <option disabled selected></option>
+          <tag:forEach items="${consultants}" var="consultant">
+            <option data-country="${consultant.country}" data-job="${consultant.job}"
+                    value="${consultant.id}">${consultant.id} - ${consultant.firstName} ${consultant.lastName}</option>
+          </tag:forEach>
         </select>
         <label class="label">
           <span class="label-text-alt"></span>
@@ -350,29 +373,33 @@
       </div>
 
       <div class="form-control w-full sm:col-span-2">
-        <label class="label" for="consultant">
+        <label class="label" for="job-seeker">
           <span class="label-text">Job Seeker</span>
         </label>
         <select
-          aria-label="consultant"
+          aria-label="job-seekers"
           class="select select-bordered"
-          name="consultant"
-          id="jobSeeker">
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
+          name="jobSeeker"
+          id="job-seeker">
+          <option disabled selected></option>
+          <tag:forEach items="${jobSeekers}" var="jobSeeker">
+            <option
+              value="${jobSeeker.id}">${jobSeeker.id} - ${jobSeeker.firstName} ${jobSeeker.lastName}
+            </option>
+          </tag:forEach>
         </select>
         <label class="label">
           <span class="label-text-alt"></span>
         </label>
       </div>
 
-      <div class="form-control w-full max-w-xs">
+      <div class="form-control w-full">
         <label class="label" for="status">
           <span class="label-text">Status</span>
         </label>
-        <select onclick="return false" onkeydown="return false" aria-label="status" class="select select-bordered" name="status" id="status">
+        <select onclick="return false" onkeydown="return false" aria-label="status"
+                class="pointer-events-none select select-bordered select-disabled"
+                name="status" id="status">
           <option value="CREATED">Created</option>
           <option value="COMPLETED">Completed</option>
           <option value="CANCELLED">Cancelled</option>
@@ -391,5 +418,25 @@
     <button>close</button>
   </form>
 </dialog>
+
+<form action="authentication" method="post" id="logout" class="hidden">
+  <input type="hidden" name="actionType" value="LOGOUT"/>
+</form>
+
+<script defer type="module">
+  import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';
+
+  const feedback = "${feedback}";
+  if (feedback) {
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+        title: 'Operation Failed.',
+        text: feedback,
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+    })
+  }
+</script>
 </body>
 </html>

@@ -9,9 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasal.jobs.enums.DatabaseType;
-import com.fasal.jobs.enums.Day;
 import com.fasal.jobs.model.Consultant;
-import com.fasal.jobs.model.ConsultantAvailability;
 import com.fasal.jobs.util.database.DatabaseFactory;
 
 public class ConsultantManagerImpl implements ConsultantManager {
@@ -87,14 +85,9 @@ public class ConsultantManagerImpl implements ConsultantManager {
 
     Consultant consultant = null;
     if (result.next()) {
-      List<ConsultantAvailability> consultantAvailabilities = new ArrayList<>();
-      ConsultantAvailability consultantAvailability = new ConsultantAvailability(result.getString("availability_id"),
-              Day.valueOf(result.getString("day")), result.getString("start_time"), result.getString("end_time"));
-      consultantAvailabilities.add(consultantAvailability);
-
       consultant = new Consultant(result.getString("id"), result.getString("email"), result.getString("phone_number"),
               result.getString("firstName"), result.getString("lastName"),
-              consultantAvailabilities, result.getString("country"), result.getString("job"));
+              null, result.getString("country"), result.getString("job"));
     }
 
     result.close();
@@ -113,14 +106,9 @@ public class ConsultantManagerImpl implements ConsultantManager {
     ResultSet result = findStatement.executeQuery(storedProcedure);
     List<Consultant> consultantList = new ArrayList<>();
     while (result.next()) {
-      List<ConsultantAvailability> consultantAvailabilities = new ArrayList<>();
-      ConsultantAvailability consultantAvailability = new ConsultantAvailability(result.getString("consultant_availability_id"),
-              Day.valueOf(result.getString("day")), result.getString("start_time"), result.getString("end_time"));
-      consultantAvailabilities.add(consultantAvailability);
-
       Consultant consultant = new Consultant(result.getString("id"), result.getString("email"), result.getString("phone_number"),
               result.getString("first_name"), result.getString("last_name"),
-              consultantAvailabilities, result.getString("country"), result.getString("job"));
+              null, result.getString("country"), result.getString("job"));
 
       consultantList.add(consultant);
     }
@@ -131,5 +119,4 @@ public class ConsultantManagerImpl implements ConsultantManager {
 
     return consultantList;
   }
-
 }
