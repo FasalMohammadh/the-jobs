@@ -58,7 +58,7 @@
             </a>
           </li>
           <li>
-            <a href="report.html" class="group">
+            <a href="report.jsp" class="group">
               <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <div>
                 <p class="text-base-content leading-4 group-hover:text-primary">Reports</p>
@@ -128,6 +128,8 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Country</th>
+                <th>Job</th>
                 <th>Created At</th>
                 <th class="sr-only">Edit</th>
                 <th class="sr-only">Delete</th>
@@ -146,13 +148,32 @@
                     <td>${consultant.firstName} ${consultant.lastName}</td>
                     <td>${consultant.email}</td>
                     <td>${consultant.phoneNumber}</td>
+                    <td>${consultant.country}</td>
+                    <td>${consultant.job}</td>
                     <td>${consultant.createdAt}</td>
                     <td>
                       <div class="inline-flex gap-2 items-center">
                         <div class="tooltip tooltip-top" data-tip="Edit">
                           <button
                             data-action="edit"
-                            data-record='{ "id":"${consultant.id}", "firstName":"${consultant.firstName}", "lastName":"${consultant.lastName}", "email":"${consultant.email}", "phoneNumber":"${consultant.phoneNumber}"}'
+                            data-record='{
+                              "id":"${consultant.id}",
+                              "firstName":"${consultant.firstName}",
+                              "lastName":"${consultant.lastName}",
+                              "email":"${consultant.email}",
+                              "phoneNumber":"${consultant.phoneNumber}",
+                              "job":"${consultant.job}",
+                              "country":"${consultant.country}",
+                              "availability":[
+                               <tag:forEach var="availability" items="${consultant.availability}" varStatus="loop">
+                                  { "id":"${availability.id}",
+                                    "day":"${availability.day}",
+                                    "startTime":"${availability.startTime}",
+                                    "endTime":"${availability.endTime}"  }
+                                    <tag:if test="${!loop.last}">,</tag:if>
+                            </tag:forEach>
+                            ]
+                             }'
                             aria-label="edit"
                             class="btn btn-circle flex items-center justify-center aspect-square h-10 rounded-full border p-1">
                             <i class="bi bi-pencil text-lg"></i>
@@ -207,7 +228,7 @@
           </a>
         </li>
         <li>
-          <a href="appointment.jsp" class="group">
+          <a href="appointment" class="group">
             <i class="bi bi-file-earmark group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <div>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Appointments</p>
@@ -216,7 +237,7 @@
           </a>
         </li>
         <li>
-          <a href="report.html" class="group">
+          <a href="report.jsp" class="group">
             <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <div>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Reports</p>
@@ -417,6 +438,7 @@
 
 <template id="consultant-availability-entry">
   <section class="grid gap-2 items-center" style="grid-template-columns: 1fr 1fr 1fr auto;">
+    <input type="hidden" name="id[]"/>
     <div class="form-control w-full max-w-xs">
       <label class="label">
         <span class="label-text">Day</span>
@@ -467,19 +489,19 @@
 </template>
 
 <script defer type="module">
-    import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';
+  import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';
 
-    const feedback = "${feedback}";
-    if (feedback) {
-        document.addEventListener('DOMContentLoaded', () => {
-            Swal.fire({
-                title: 'Operation Failed.',
-                text: feedback,
-                icon: 'error',
-                confirmButtonText: 'Close'
-            })
-        })
-    }
+  const feedback = "${feedback}";
+  if (feedback) {
+    document.addEventListener('DOMContentLoaded', () => {
+      Swal.fire({
+        title: 'Operation Failed.',
+        text: feedback,
+        icon: 'error',
+        confirmButtonText: 'Close'
+      })
+    })
+  }
 </script>
 </body>
 </html>

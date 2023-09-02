@@ -18,6 +18,7 @@ import com.fasal.jobs.enums.Day;
 import com.fasal.jobs.model.Consultant;
 import com.fasal.jobs.model.ConsultantAvailability;
 import com.fasal.jobs.service.ConsultantService;
+import com.fasal.jobs.util.helper.Helper;
 
 public class ConsultantController extends HttpServlet {
   @Override
@@ -34,15 +35,9 @@ public class ConsultantController extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     ActionType actionType = ActionType.valueOf(request.getParameter("actionType"));
     switch (actionType) {
-      case CREATE:
-        createConsultant(request, response);
-        break;
-      case UPDATE:
-        updateConsultant(request, response);
-        break;
-      case DELETE:
-        deleteConsultant(request, response);
-        break;
+      case CREATE -> createConsultant(request, response);
+      case UPDATE -> updateConsultant(request, response);
+      case DELETE -> deleteConsultant(request, response);
     }
   }
 
@@ -50,6 +45,13 @@ public class ConsultantController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
       String id = UUID.randomUUID().toString();
       String email = request.getParameter("email");
       String phoneNumber = request.getParameter("phoneNumber");
@@ -64,8 +66,7 @@ public class ConsultantController extends HttpServlet {
       String[] endTime = request.getParameterValues("endTime[]");
 
       for (int i = 0; i < availableDays.length; i++) {
-        String consultantAvailabilityId = UUID.randomUUID().toString();
-        ConsultantAvailability consultantAvailability = new ConsultantAvailability(consultantAvailabilityId, Day.valueOf(availableDays[i]), startTime[i], endTime[i]);
+        ConsultantAvailability consultantAvailability = new ConsultantAvailability(null, Day.valueOf(availableDays[i]), startTime[i], endTime[i], id);
         availability.add(consultantAvailability);
       }
 
@@ -94,6 +95,13 @@ public class ConsultantController extends HttpServlet {
     boolean hasErrored = false;
     String feedback = null;
     try {
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
       String id = request.getParameter("id");
       String email = request.getParameter("email");
       String phoneNumber = request.getParameter("phoneNumber");
@@ -103,13 +111,19 @@ public class ConsultantController extends HttpServlet {
       String job = request.getParameter("job");
       List<ConsultantAvailability> availability = new ArrayList<>();
 
+      String[] availableIds = request.getParameterValues("id[]");
       String[] availableDays = request.getParameterValues("day[]");
       String[] startTime = request.getParameterValues("startTime[]");
       String[] endTime = request.getParameterValues("endTime[]");
 
       for (int i = 0; i < availableDays.length; i++) {
-        String consultantAvailabilityId = UUID.randomUUID().toString();
-        ConsultantAvailability consultantAvailability = new ConsultantAvailability(consultantAvailabilityId, Day.valueOf(availableDays[i]), startTime[i], endTime[i]);
+        ConsultantAvailability consultantAvailability = new ConsultantAvailability(
+                availableIds[i].isEmpty() ? null : availableIds[i],
+                Day.valueOf(availableDays[i]),
+                startTime[i],
+                endTime[i],
+                id
+        );
         availability.add(consultantAvailability);
       }
 
@@ -138,6 +152,13 @@ public class ConsultantController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
       String id = request.getParameter("id");
       boolean isDeleted = ConsultantService.getService().delete(id);
       if (!isDeleted) {
@@ -162,11 +183,16 @@ public class ConsultantController extends HttpServlet {
     String consultantId = request.getParameter("consultantId");
 
     try {
-      Consultant consultant = ConsultantService.getService().findUnique(consultantId);
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
-      request.setAttribute("consultant", consultant);
-      RequestDispatcher requestDispatcher = request.getRequestDispatcher("admin-consultant.jsp");
-      requestDispatcher.forward(request, response);
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+      } else {
+        Consultant consultant = ConsultantService.getService().findUnique(consultantId);
+        request.setAttribute("consultant", consultant);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("admin-consultant.jsp");
+        requestDispatcher.forward(request, response);
+      }
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -176,10 +202,16 @@ public class ConsultantController extends HttpServlet {
           throws ServletException, IOException {
     HttpSession session = request.getSession();
     try {
-      List<Consultant> consultants = ConsultantService.getService().findMany();
-      request.setAttribute("consultants", consultants.isEmpty() ? null : consultants);
-      RequestDispatcher requestDispatcher = request.getRequestDispatcher("consultant.jsp");
-      requestDispatcher.forward(request, response);
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+      } else {
+        List<Consultant> consultants = ConsultantService.getService().findMany();
+        request.setAttribute("consultants", consultants.isEmpty() ? null : consultants);
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("consultant.jsp");
+        requestDispatcher.forward(request, response);
+      }
     } catch (ClassNotFoundException | SQLException exception) {
       exception.printStackTrace();
     } finally {

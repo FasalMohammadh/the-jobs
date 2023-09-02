@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.fasal.jobs.enums.ActionType;
 import com.fasal.jobs.model.JobSeeker;
 import com.fasal.jobs.service.JobSeekerService;
+import com.fasal.jobs.util.helper.Helper;
 
 public class JobSeekerController extends HttpServlet {
 
@@ -28,18 +29,12 @@ public class JobSeekerController extends HttpServlet {
   }
 
   @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     ActionType actionType = ActionType.valueOf(request.getParameter("actionType"));
     switch (actionType) {
-      case CREATE:
-        createJobSeeker(request, response);
-        break;
-      case UPDATE:
-        updateJobSeeker(request, response);
-        break;
-      case DELETE:
-        deleteJobSeeker(request, response);
-        break;
+      case CREATE -> createJobSeeker(request, response);
+      case UPDATE -> updateJobSeeker(request, response);
+      case DELETE -> deleteJobSeeker(request, response);
     }
   }
 
@@ -47,6 +42,13 @@ public class JobSeekerController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
       String id = UUID.randomUUID().toString();
       String email = request.getParameter("email");
       String phoneNumber = request.getParameter("phoneNumber");
@@ -73,10 +75,16 @@ public class JobSeekerController extends HttpServlet {
     }
   }
 
-  private void updateJobSeeker(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  private void updateJobSeeker(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String feedback = null;
     boolean hasErrored = false;
     try {
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
 
       String id = request.getParameter("id");
       String email = request.getParameter("email");
@@ -108,6 +116,13 @@ public class JobSeekerController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
       String id = request.getParameter("id");
       boolean isDeleted = getJobSeekerService().delete(id);
 
@@ -132,15 +147,20 @@ public class JobSeekerController extends HttpServlet {
           throws ServletException, IOException {
     HttpSession session = request.getSession();
     try {
-      List<JobSeeker> jobSeekers;
-      jobSeekers = getJobSeekerService().findMany();
+      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+
+      if (!isAuthorized) {
+        response.sendRedirect("login.jsp");
+        return;
+      }
+
+      List<JobSeeker> jobSeekers = getJobSeekerService().findMany();
       request.setAttribute("jobSeekers", jobSeekers.isEmpty() ? null : jobSeekers);
       request.setAttribute("feedback", session.getAttribute("feedback"));
       RequestDispatcher requestDispatcher = request.getRequestDispatcher("job-seeker.jsp");
       requestDispatcher.forward(request, response);
     } catch (ClassNotFoundException | SQLException exception) {
       exception.printStackTrace();
-      System.out.println(exception.getMessage());
     } finally {
       session.removeAttribute("feedback");
     }

@@ -1,17 +1,22 @@
 package com.fasal.jobs.dao;
 
 import com.fasal.jobs.enums.DatabaseType;
-import com.fasal.jobs.model.Consultant;
+import com.fasal.jobs.enums.Day;
 import com.fasal.jobs.model.ConsultantAvailability;
 import com.fasal.jobs.util.database.DatabaseFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConsultantAvailabilityManagerImpl implements ConsultantAvailabilityManager {
-  public boolean create(ConsultantAvailability consultantAvailability, String consultantId) throws ClassNotFoundException, SQLException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+
+  private Connection getMysqlConnection() throws SQLException, ClassNotFoundException {
+    return new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+  }
+
+  public boolean create(ConsultantAvailability consultantAvailability) throws ClassNotFoundException, SQLException {
+    Connection connection = getMysqlConnection();
     String query = "INSERT INTO consultant_availability (id, day,start_time,end_time,consultant_id) VALUES (?, ?, ?, ?, ?);";
     PreparedStatement createStatement = connection.prepareStatement(query);
 
@@ -19,7 +24,7 @@ public class ConsultantAvailabilityManagerImpl implements ConsultantAvailability
     createStatement.setString(2, consultantAvailability.getDay().toString());
     createStatement.setString(3, consultantAvailability.getStartTime());
     createStatement.setString(4, consultantAvailability.getEndTime());
-    createStatement.setString(5, consultantId);
+    createStatement.setString(5, consultantAvailability.getConsultantId());
 
     int result = createStatement.executeUpdate();
 
@@ -30,7 +35,7 @@ public class ConsultantAvailabilityManagerImpl implements ConsultantAvailability
   }
 
   public boolean update(ConsultantAvailability consultantAvailability) throws ClassNotFoundException, SQLException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    Connection connection = getMysqlConnection();
     String query = "UPDATE consultant_availability SET day=?,start_time=?, end_time=? WHERE id=?";
     PreparedStatement updateStatement = connection.prepareStatement(query);
 
@@ -48,7 +53,7 @@ public class ConsultantAvailabilityManagerImpl implements ConsultantAvailability
   }
 
   public boolean delete(String id) throws ClassNotFoundException, SQLException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    Connection connection = getMysqlConnection();
     String query = "DELETE FROM consultant_availability where id=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
 
@@ -61,5 +66,86 @@ public class ConsultantAvailabilityManagerImpl implements ConsultantAvailability
 
     return result > 0;
   }
+
+  public ConsultantAvailability findUnique(String id) throws SQLException, ClassNotFoundException,
+          IllegalArgumentException {
+    Connection connection = getMysqlConnection();
+    String query = "SELECT * FROM consultant_availability WHERE id=?";
+    PreparedStatement findStatement = connection.prepareStatement(query);
+
+    findStatement.setString(1, id);
+    ResultSet result = findStatement.executeQuery();
+
+    ConsultantAvailability consultantAvailablity = null;
+    if (result.next())
+      consultantAvailablity = new ConsultantAvailability(
+              result.getString("id"),
+              Day.valueOf(result.getString("day")),
+              result.getString("start_time"),
+              result.getString("end_time"),
+              result.getString("consultant_id")
+      );
+
+
+    result.close();
+    findStatement.close();
+    connection.close();
+
+    return consultantAvailablity;
+  }
+
+  public List<ConsultantAvailability> findMany() throws SQLException, ClassNotFoundException,
+          IllegalArgumentException {
+    Connection connection = getMysqlConnection();
+    String query = "SELECT * FROM consultant_availability";
+    Statement findStatement = connection.createStatement();
+
+    ResultSet result = findStatement.executeQuery(query);
+
+    List<ConsultantAvailability> consultantAvailabilities = extractConsultantAvailabilities(result);
+
+    result.close();
+    findStatement.close();
+    connection.close();
+
+    return consultantAvailabilities;
+  }
+
+  public List<ConsultantAvailability> findMany(String consultantId) throws SQLException, ClassNotFoundException,
+          IllegalArgumentException {
+    Connection connection = getMysqlConnection();
+    String query = "SELECT * FROM consultant_availability WHERE consultant_id=?";
+    PreparedStatement findStatement = connection.prepareStatement(query);
+
+    findStatement.setString(1, consultantId);
+
+    ResultSet result = findStatement.executeQuery();
+
+    List<ConsultantAvailability> consultantAvailabilities = extractConsultantAvailabilities(result);
+
+    result.close();
+    findStatement.close();
+    connection.close();
+
+    return consultantAvailabilities;
+  }
+
+  private List<ConsultantAvailability> extractConsultantAvailabilities(ResultSet result) throws SQLException {
+    List<ConsultantAvailability> consultantAvailabilities = new ArrayList<>();
+    while (result.next()) {
+
+      ConsultantAvailability consultantAvailability = new ConsultantAvailability(
+              result.getString("id"),
+              Day.valueOf(result.getString("day")),
+              result.getString("start_time"),
+              result.getString("end_time"),
+              result.getString("consultant_id")
+      );
+      consultantAvailabilities.add(consultantAvailability);
+    }
+
+    return consultantAvailabilities;
+  }
+
 
 }

@@ -7,12 +7,14 @@ public class ConsultantAvailability {
   private Day day;
   private String startTime;
   private String endTime;
+  private String consultantId;
 
-  public ConsultantAvailability(String id, Day day, String startTime, String endTime) {
+  public ConsultantAvailability(String id, Day day, String startTime, String endTime, String consultantId) {
     this.id = id;
     this.day = day;
     this.startTime = startTime;
     this.endTime = endTime;
+    this.consultantId = consultantId;
   }
 
   public String getId() {
@@ -45,5 +47,13 @@ public class ConsultantAvailability {
 
   public void setEndTime(String endTime) {
     this.endTime = endTime;
+  }
+
+  public String getConsultantId() {
+    return consultantId;
+  }
+
+  public void setConsultantId(String consultantId) {
+    this.consultantId = consultantId;
   }
 }
