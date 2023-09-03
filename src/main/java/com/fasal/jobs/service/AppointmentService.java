@@ -40,4 +40,16 @@ public class AppointmentService {
   public List<Appointment> findMany() throws ClassNotFoundException, SQLException {
     return getAppointmentManager().findMany();
   }
+
+  public List<Appointment> findMany(int month, int year) throws ClassNotFoundException, SQLException {
+    return getAppointmentManager().findMany(month, year);
+  }
+
+  public String getMostAppointedJob(int month, int year) throws SQLException, ClassNotFoundException {
+    return getAppointmentManager().getMostAppointedJob(month, year);
+  }
+
+  public String getMostAppointedCountry(int month, int year) throws SQLException, ClassNotFoundException {
+    return getAppointmentManager().getMostAppointedCountry(month, year);
+  }
 }

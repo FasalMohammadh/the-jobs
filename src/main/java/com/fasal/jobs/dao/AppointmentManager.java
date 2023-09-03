@@ -17,4 +17,8 @@ public interface AppointmentManager {
 
   public List<Appointment> findMany() throws ClassNotFoundException, SQLException;
 
+  public List<Appointment> findMany(int month, int year) throws ClassNotFoundException, SQLException;
+
+  public String getMostAppointedJob(int month,int year) throws ClassNotFoundException, SQLException;
+  public String getMostAppointedCountry(int month, int year) throws ClassNotFoundException, SQLException;
 }

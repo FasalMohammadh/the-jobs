@@ -11,9 +11,13 @@ import java.util.List;
 
 public class AppointmentManagerImpl implements AppointmentManager {
 
+  private Connection getMysqlConnection() throws ClassNotFoundException, SQLException {
+    return new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+  }
+
   @Override
   public boolean create(Appointment appointment) throws SQLException, ClassNotFoundException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    Connection connection = getMysqlConnection();
     String query = "INSERT INTO appointment(id,date_time, job, country, job_seeker_id, consultant_id, status) VALUES(?,?,?,?,?,?,?);";
     PreparedStatement createStatement = connection.prepareStatement(query);
 
@@ -34,7 +38,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
 
   @Override
   public boolean update(Appointment appointment) throws ClassNotFoundException, SQLException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    Connection connection = getMysqlConnection();
     String query = "UPDATE appointment SET date_time=?, job=?, country=?, job_seeker_id=?, consultant_id=?, status=? WHERE id=?;";
     PreparedStatement updateStatement = connection.prepareStatement(query);
 
@@ -56,7 +60,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
 
   @Override
   public boolean delete(String id) throws SQLException, ClassNotFoundException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    Connection connection = getMysqlConnection();
     String query = "DELETE FROM appointment WHERE id=?";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
     deleteStatement.setString(1, id);
@@ -70,7 +74,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
 
   @Override
   public Appointment findUnique(String appointmentId) throws ClassNotFoundException, SQLException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    Connection connection = getMysqlConnection();
     String query = "SELECT * FROM appointment WHERE id=?";
     PreparedStatement findStatement = connection.prepareStatement(query);
 
@@ -94,7 +98,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
 
   @Override
   public List<Appointment> findMany() throws ClassNotFoundException, SQLException {
-    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    Connection connection = getMysqlConnection();
     String query = "SELECT * FROM appointment";
     Statement findStatement = connection.createStatement();
 
@@ -116,5 +120,73 @@ public class AppointmentManagerImpl implements AppointmentManager {
 
     return appointmentList;
   }
+
+  @Override
+  public List<Appointment> findMany(int month, int year) throws ClassNotFoundException, SQLException {
+    Connection connection = getMysqlConnection();
+    String query = "SELECT * FROM appointment WHERE MONTH(created_at) = ? AND Year(created_at) = ?";
+    PreparedStatement findStatement = connection.prepareStatement(query);
+
+    findStatement.setInt(1, month);
+    findStatement.setInt(2, year);
+
+    ResultSet result = findStatement.executeQuery();
+    List<Appointment> appointmentList = new ArrayList<>();
+    while (result.next()) {
+      Appointment appointment = new Appointment(
+              result.getString("id"), result.getTimestamp("date_time").toLocalDateTime(), result.getString("consultant_id"),
+              result.getString("job_seeker_id"),
+              result.getString("country"), result.getString("job"),
+              result.getDate("created_at"), AppointmentStatus.valueOf(result.getString("status")));
+
+      appointmentList.add(appointment);
+    }
+
+    result.close();
+    findStatement.close();
+    connection.close();
+
+    return appointmentList;
+  }
+
+  @Override
+  public String getMostAppointedJob(int month, int year) throws ClassNotFoundException, SQLException {
+    Connection connection = getMysqlConnection();
+    String query = "SELECT job, COUNT(job) AS job_count FROM appointment WHERE MONTH(created_at) = ? AND YEAR(created_at) = ? GROUP BY job ORDER BY job_count DESC LIMIT 1;";
+    PreparedStatement statement = connection.prepareStatement(query);
+
+    statement.setInt(1, month);
+    statement.setInt(2, year);
+
+    ResultSet result = statement.executeQuery();
+    String job = result.next() ? result.getString("job") : null;
+
+    result.close();
+    statement.close();
+    connection.close();
+
+    return job;
+  }
+
+  @Override
+  public String getMostAppointedCountry(int month, int year) throws ClassNotFoundException, SQLException {
+    Connection connection = getMysqlConnection();
+    String query = "SELECT country, COUNT(country) AS country_count FROM appointment WHERE MONTH(created_at)=? AND YEAR(created_at)=? GROUP BY country ORDER BY country_count DESC LIMIT 1;";
+    PreparedStatement statement = connection.prepareStatement(query);
+
+    statement.setInt(1, month);
+    statement.setInt(2, year);
+
+    ResultSet result = statement.executeQuery();
+
+    String country = result.next() ? result.getString("country") : null;
+
+    result.close();
+    statement.close();
+    connection.close();
+
+    return country;
+  }
+
 
 }

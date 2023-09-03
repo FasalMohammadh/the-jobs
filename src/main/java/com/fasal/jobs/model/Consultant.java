@@ -1,7 +1,6 @@
 package com.fasal.jobs.model;
 
 import java.util.List;
-import java.time.LocalDate;
 
 public class Consultant extends Person {
   private String id;
@@ -9,7 +8,7 @@ public class Consultant extends Person {
   private String phoneNumber;
   private String country;
   private String job;
-  private LocalDate createdAt;
+  private String createdAt;
   private List<ConsultantAvailability> availability;
 
   public Consultant(String id, String email, String phoneNumber, String firstName, String lastName,
@@ -24,7 +23,7 @@ public class Consultant extends Person {
     this.job = job;
   }
 
-  public Consultant(String id, String email, String phoneNumber, String firstName, String lastName, LocalDate createdAt,
+  public Consultant(String id, String email, String phoneNumber, String firstName, String lastName, String createdAt,
                     List<ConsultantAvailability> availability, String country, String job) {
     super(firstName, lastName);
 
@@ -61,11 +60,11 @@ public class Consultant extends Person {
     this.phoneNumber = phoneNumber;
   }
 
-  public LocalDate getCreatedAt() {
+  public String getCreatedAt() {
     return createdAt;
   }
 
-  public void setCreatedAt(LocalDate createdAt) {
+  public void setCreatedAt(String createdAt) {
     this.createdAt = createdAt;
   }
 
