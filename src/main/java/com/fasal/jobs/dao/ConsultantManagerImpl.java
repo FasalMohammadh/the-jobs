@@ -10,10 +10,6 @@ import com.fasal.jobs.util.database.DatabaseFactory;
 
 public class ConsultantManagerImpl implements ConsultantManager {
 
-  public ConsultantAvailabilityManager getConsultantAvailabilityManager() {
-    return new ConsultantAvailabilityManagerImpl();
-  }
-
   @Override
   public boolean create(Consultant consultant) throws SQLException, ClassNotFoundException {
 
