@@ -48,7 +48,7 @@ public class ConsultantController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -98,7 +98,7 @@ public class ConsultantController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -155,7 +155,7 @@ public class ConsultantController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -186,7 +186,7 @@ public class ConsultantController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
       } else {
         Consultant consultant = ConsultantService.getService().findUnique(consultantId);
         request.setAttribute("consultant", consultant);
@@ -205,7 +205,7 @@ public class ConsultantController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
       } else {
         List<Consultant> consultants = ConsultantService.getService().findMany();
         request.setAttribute("consultants", consultants.isEmpty() ? null : consultants);

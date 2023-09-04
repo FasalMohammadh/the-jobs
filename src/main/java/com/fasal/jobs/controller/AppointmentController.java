@@ -70,7 +70,7 @@ public class AppointmentController extends HttpServlet {
       boolean isAuthorized = checkIsAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -113,7 +113,7 @@ public class AppointmentController extends HttpServlet {
       boolean isAuthorized = checkIsAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -156,7 +156,7 @@ public class AppointmentController extends HttpServlet {
       boolean isAuthorized = checkIsAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -188,7 +188,7 @@ public class AppointmentController extends HttpServlet {
       boolean isAuthorized = checkIsAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
