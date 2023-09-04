@@ -19,7 +19,7 @@
 <div class="drawer">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle"/>
   <div class="drawer-content grid grid-flow-row lg:grid-cols-[auto_1fr]">
-    <div class="navbar w-fit items-start bg-base-300 h-fit">
+    <div class="navbar w-fit items-start bg-base-300 lg:min-h-screen lg:h-full rounded lg:rounded-none">
       <div class="flex-none lg:hidden">
         <label for="my-drawer-3" class="btn btn-square btn-ghost">
           <i class="bi bi-list text-2xl"></i>
@@ -42,12 +42,6 @@
         </div>
 
         <ul class="menu menu-vertical font-poppins gap-2">
-          <li>
-            <a href="index.html" class="group">
-              <i class="bi bi-house group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-              <p class="text-base-content leading-4 group-hover:text-primary">Home</p>
-            </a>
-          </li>
           <li>
             <a href="appointment" class="group">
               <i class="bi bi-file-earmark group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
@@ -204,7 +198,7 @@
 
   <aside class="drawer-side">
     <label for="my-drawer-3" class="drawer-overlay"></label>
-    <div class="bg-base-300 min-h-screen">
+    <div class="bg-base-300 min-h-screen h-full">
       <div class="flex justify-between px-3 mb-2 py-4">
         <div>
           <h1 class="font-bold text-lg lg:text-3xl text-primary">
@@ -221,12 +215,6 @@
       </div>
 
       <ul class="menu menu-vertical font-poppins gap-2">
-        <li>
-          <a href="index.html" class="group">
-            <i class="bi bi-house group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-            <p class="text-base-content leading-4 group-hover:text-primary">Home</p>
-          </a>
-        </li>
         <li>
           <a href="appointment" class="group">
             <i class="bi bi-file-earmark group-hover:text-indigo-600 text-2xl w-8 h-8"></i>

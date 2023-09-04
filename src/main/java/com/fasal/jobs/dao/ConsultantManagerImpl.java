@@ -1,10 +1,6 @@
 package com.fasal.jobs.dao;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +82,7 @@ public class ConsultantManagerImpl implements ConsultantManager {
     Consultant consultant = null;
     if (result.next()) {
       consultant = new Consultant(result.getString("id"), result.getString("email"), result.getString("phone_number"),
-              result.getString("firstName"), result.getString("lastName"),
+              result.getString("first_name"), result.getString("last_name"), result.getString("created_at"),
               null, result.getString("country"), result.getString("job"));
     }
 
@@ -107,7 +103,7 @@ public class ConsultantManagerImpl implements ConsultantManager {
     List<Consultant> consultantList = new ArrayList<>();
     while (result.next()) {
       Consultant consultant = new Consultant(result.getString("id"), result.getString("email"), result.getString("phone_number"),
-              result.getString("first_name"), result.getString("last_name"),
+              result.getString("first_name"), result.getString("last_name"), result.getString("created_at"),
               null, result.getString("country"), result.getString("job"));
 
       consultantList.add(consultant);
@@ -118,5 +114,24 @@ public class ConsultantManagerImpl implements ConsultantManager {
     connection.close();
 
     return consultantList;
+  }
+
+  @Override
+  public String getMostAppointedConsultantId(int month, int year) throws ClassNotFoundException, SQLException {
+    Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
+    String query = "SELECT c.id, COUNT(a.id) as appointment_count FROM consultant c JOIN appointment a on c.id = a.consultant_id WHERE MONTH(a.created_at) = ? AND YEAR(a.created_at) = ? GROUP BY a.id ORDER BY appointment_count DESC LIMIT 1;";
+    PreparedStatement statement = connection.prepareStatement(query);
+
+    statement.setInt(1, month);
+    statement.setInt(2, year);
+
+    ResultSet result = statement.executeQuery();
+    String consultantId = result.next() ? result.getString("id") : null;
+
+    result.close();
+    statement.close();
+    connection.close();
+
+    return consultantId;
   }
 }

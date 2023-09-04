@@ -63,7 +63,7 @@
         icon: 'error',
         confirmButtonText: 'Close'
       }).then(()=>{
-        window.location.replace("login.jsp")
+        window.location.replace("index.jsp")
       })
     })
   }

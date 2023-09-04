@@ -74,7 +74,6 @@ public class ConsultantService {
     consultant.setAvailability(consultantAvailabilities);
 
     return consultant;
-
   }
 
   public List<Consultant> findMany() throws ClassNotFoundException, SQLException {
@@ -86,6 +85,10 @@ public class ConsultantService {
     }
 
     return consultants;
+  }
+
+  public String getMostAppointedConsultantId(int month, int year) throws ClassNotFoundException, SQLException {
+    return getConsultantManager().getMostAppointedConsultantId(month, year);
   }
 
   public boolean createConsultantAvailabilities(List<ConsultantAvailability> consultantAvailabilities) throws SQLException, ClassNotFoundException {

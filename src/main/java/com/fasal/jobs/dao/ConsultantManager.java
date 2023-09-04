@@ -15,4 +15,7 @@ public interface ConsultantManager {
   public Consultant findUnique(String id) throws ClassNotFoundException, SQLException;
 
   public List<Consultant> findMany() throws ClassNotFoundException, SQLException;
+
+  public String getMostAppointedConsultantId(int month, int year) throws ClassNotFoundException, SQLException;
+
 }

@@ -12,13 +12,12 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./assets/index.css" rel="stylesheet"/>
   <script src="./assets/index.js" type="module"></script>
-  <script src="./assets/jobSeeker.js" type="module"></script>
 </head>
 <body>
 <div class="drawer">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle"/>
   <div class="drawer-content grid grid-flow-row lg:grid-cols-[auto_1fr]">
-    <div class="navbar w-fit items-start bg-base-300 h-fit">
+    <div class="navbar w-fit items-start bg-base-300 lg:min-h-screen lg:h-full rounded lg:rounded-none">
       <div class="flex-none lg:hidden">
         <label for="my-drawer-3" class="btn btn-square btn-ghost">
           <i class="bi bi-list text-2xl"></i>
@@ -41,12 +40,6 @@
         </div>
 
         <ul class="menu menu-vertical font-poppins gap-2">
-          <li>
-            <a href="index.html" class="group">
-              <i class="bi bi-house group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-              <p class="text-base-content leading-4 group-hover:text-primary">Home</p>
-            </a>
-          </li>
           <li>
             <a href="appointment" class="group">
               <i class="bi bi-file-earmark group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
@@ -107,28 +100,16 @@
     </div>
 
     <div class="p-10 min-w-0">
-      <main>
-        <section class="block w-fit ml-auto mb-3">
-          <form action="report">
+      <main class="flex flex-col gap-3">
+        <section class="block w-fit ml-auto">
+          <form method="post" action="report" class="grid gap-3 items-end"
+                style="grid-template-columns: repeat(2,minmax(200px,1fr)) auto">
 
             <div class="form-control w-full max-w-xs">
-              <label class="label" for="firstName">
-                <span class="label-text">Month</span>
+              <label class="label" for="month">
+                <span class="label-text">Year & Month</span>
               </label>
-              <input id="month" name="month" type="text" class="input input-bordered w-full max-w-xs"/>
-              <label class="label">
-                <span class="label-text-alt"></span>
-              </label>
-            </div>
-
-            <div class="form-control w-full max-w-xs">
-              <label class="label" for="lastName">
-                <span class="label-text">Type</span>
-              </label>
-              <input id="type" name="type" type="text" class="input input-bordered w-full max-w-xs"/>
-              <label class="label">
-                <span class="label-text-alt"></span>
-              </label>
+              <input required type="month" name="yearMonth" id="month" class="input input-bordered"/>
             </div>
 
             <button id="create-job-seeker" class="btn btn-primary normal-case">
@@ -137,19 +118,123 @@
 
           </form>
         </section>
-        <section class="w-full">
-          <header class="px-5 py-4">
-            <h2 class="font-semibold text-xl">Generated Report</h2>
-          </header>
+        <tag:if
+          test="${appointments!=null && mostAppointedConsultant!=null && totalAppointments!=null && mostAppointedJob!=null && mostAppointedCountry!=null}">
 
-        </section>
+          <section class="w-full">
+
+
+            <header class="px-5 py-4">
+              <h2 class="font-semibold text-xl">Report</h2>
+            </header>
+
+            <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
+              <table class="table table-zebra" aria-label="report">
+                <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Date Time</th>
+                  <th>Job</th>
+                  <th>Country</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                  <th class="sr-only">Edit</th>
+                  <th class="sr-only">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tag:if test="${appointments==null}">
+                  <tr>
+                    <td colspan="7" class="text-center">No records found.</td>
+                  </tr>
+                </tag:if>
+                <tag:if test="${appointments!=null}">
+                  <tag:forEach var="appointment" items="${appointments}">
+                    <tr class="whitespace-nowrap">
+                      <td>${appointment.id}</td>
+                      <td>${appointment.dateTime}</td>
+                      <td>${appointment.job}</td>
+                      <td>${appointment.country}</td>
+                      <td>${appointment.status}</td>
+                      <td>${appointment.createdAt}</td>
+                    </tr>
+                  </tag:forEach>
+                </tag:if>
+
+
+                <tr>
+                  <td colspan="5" class="text-right font-bold">
+                    Most appointed Job
+                  </td>
+                  <td colspan="1">
+                      ${mostAppointedJob}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="5" class="text-right font-bold">
+                    Most appointed country
+                  </td>
+                  <td colspan="1">
+                      ${mostAppointedCountry}
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </section>
+
+          <section class="w-full">
+
+            <header class="px-5 py-4">
+              <h2 class="text-lg font-semibold">Most appointed consultant</h2>
+            </header>
+
+            <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
+
+              <table class="table table-zebra" aria-label="report">
+                <thead class="whitespace-nowrap">
+                <tr>
+                  <th>Id</th>
+                  <th>Full Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+                  <th>Country</th>
+                  <th>Job</th>
+                  <th>Created At</th>
+                </tr>
+                </thead>
+                <tbody class="whitespace-nowrap">
+                <tr>
+                  <td>${mostAppointedConsultant.id}</td>
+                  <td>${mostAppointedConsultant.firstName} ${mostAppointedConsultant.lastName}</td>
+                  <td>${mostAppointedConsultant.email}</td>
+                  <td>${mostAppointedConsultant.phoneNumber}</td>
+                  <td>${mostAppointedConsultant.country}</td>
+                  <td>${mostAppointedConsultant.job}</td>
+                  <td>${mostAppointedConsultant.createdAt}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+        </tag:if>
+
+        <tag:if
+          test="${appointments==null && mostAppointedConsultant==null && totalAppointments==null && mostAppointedJob==null && mostAppointedCountry==null}">
+          <p class="text-2xl font-bold mt-3">Please click on "Generate Report" button to generate an instant report</p>
+        </tag:if>
+
       </main>
+
     </div>
   </div>
 
   <aside class="drawer-side">
     <label for="my-drawer-3" class="drawer-overlay"></label>
-    <div class="bg-base-300 min-h-screen">
+    <div class="bg-base-300 min-h-screen h-full">
       <div class="flex justify-between px-3 mb-2 py-4">
         <div>
           <h1 class="font-bold text-lg lg:text-3xl text-primary">
@@ -166,12 +251,6 @@
       </div>
 
       <ul class="menu menu-vertical font-poppins gap-2">
-        <li>
-          <a href="index.html" class="group">
-            <i class="bi bi-house group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-            <p class="text-base-content leading-4 group-hover:text-primary">Home</p>
-          </a>
-        </li>
         <li>
           <a href="appointment" class="group">
             <i class="bi bi-file-earmark group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
@@ -229,70 +308,6 @@
     </div>
   </aside>
 </div>
-
-
-<dialog id="appointmentDialog" class="modal">
-  <form
-    action="job-seeker"
-    class="modal-box"
-    name="appointmentForm"
-    id="appointmentForm"
-    method="post">
-    <h1 class="text-xl font-medium mb-3 font-mont">Job Seeker Details</h1>
-
-    <div class="grid sm:grid-cols-2 gap-4">
-      <input type="hidden" name="actionType" value="CREATE"/>
-      <input type="hidden" name="id"/>
-
-      <div class="form-control w-full max-w-xs">
-        <label class="label" for="firstName">
-          <span class="label-text">First name</span>
-        </label>
-        <input id="firstName" name="firstName" type="text" class="input input-bordered w-full max-w-xs"/>
-        <label class="label">
-          <span class="label-text-alt"></span>
-        </label>
-      </div>
-
-      <div class="form-control w-full max-w-xs">
-        <label class="label" for="lastName">
-          <span class="label-text">Last name</span>
-        </label>
-        <input id="lastName" name="lastName" type="text" class="input input-bordered w-full max-w-xs"/>
-        <label class="label">
-          <span class="label-text-alt"></span>
-        </label>
-      </div>
-
-      <div class="form-control w-full max-w-xs">
-        <label class="label" for="email">
-          <span class="label-text">Email</span>
-        </label>
-        <input id="email" name="email" type="text" class="input input-bordered w-full max-w-xs"/>
-        <label class="label">
-          <span class="label-text-alt"></span>
-        </label>
-      </div>
-
-      <div class="form-control w-full max-w-xs">
-        <label class="label" for="phoneNumber">
-          <span class="label-text">Phone number</span>
-        </label>
-        <input id="phoneNumber" name="phoneNumber" type="text" class="input input-bordered w-full max-w-xs"/>
-        <label class="label">
-          <span class="label-text-alt"></span>
-        </label>
-      </div>
-    </div>
-    <div class="w-fit ml-auto grid grid-cols-2 gap-2">
-      <button type="reset" class="btn btn-neutral">Clear</button>
-      <button type="submit" class="btn btn-primary">Save</button>
-    </div>
-  </form>
-  <form method="dialog" class="modal-backdrop">
-    <button>close</button>
-  </form>
-</dialog>
 
 <script defer type="module">
   import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';

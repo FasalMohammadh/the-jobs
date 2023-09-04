@@ -21,23 +21,8 @@ public class EmployeeService {
     return new EmployeeManageImpl();
   }
 
-//  public boolean create(Employee employee) throws ClassNotFoundException, SQLException {
-//    return getEmployeeManager().create(employee);
-//  }
-//
-//  public boolean update(Employee employee) throws ClassNotFoundException, SQLException {
-//    return getEmployeeManager().update(employee);
-//  }
-//
-//  public boolean delete(String id) throws ClassNotFoundException, SQLException {
-//    return getEmployeeManager().delete(id);
-//  }
-
   public Employee findUnique(String id) throws ClassNotFoundException, SQLException {
     return getEmployeeManager().findUnique(id);
   }
 
-//  public List<Employee> findMany() throws ClassNotFoundException, SQLException {
-//    return getEmployeeManager().findMany();
-//  }
 }

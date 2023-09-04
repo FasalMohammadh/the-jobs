@@ -16,6 +16,11 @@ public class AuthenticationController extends HttpServlet {
   }
 
   @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    request.getRequestDispatcher("index.jsp").forward(request, response);
+  }
+
+  @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     String actionType = request.getParameter("actionType");
     switch (actionType) {
@@ -46,7 +51,7 @@ public class AuthenticationController extends HttpServlet {
     } finally {
       if (!isAuthenticated) {
         request.setAttribute("feedback", feedback);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("login.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
         requestDispatcher.forward(request, response);
       }
     }
@@ -59,7 +64,7 @@ public class AuthenticationController extends HttpServlet {
     try {
       isLoggedOut = getAuthenticationService().logout(request.getSession());
 
-      if (isLoggedOut) response.sendRedirect("login.jsp");
+      if (isLoggedOut) response.sendRedirect("index.jsp");
       else
         feedback = "Unable to logout, Something is wrong.";
 
