@@ -45,7 +45,7 @@ public class JobSeekerController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -82,7 +82,7 @@ public class JobSeekerController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -119,7 +119,7 @@ public class JobSeekerController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
@@ -150,7 +150,7 @@ public class JobSeekerController extends HttpServlet {
       boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
       if (!isAuthorized) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("login.jsp");
         return;
       }
 
