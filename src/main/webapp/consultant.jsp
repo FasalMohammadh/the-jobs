@@ -124,7 +124,6 @@
                 <th>Phone Number</th>
                 <th>Country</th>
                 <th>Job</th>
-                <th>Created At</th>
                 <th class="sr-only">Edit</th>
                 <th class="sr-only">Delete</th>
               </tr>
@@ -144,7 +143,6 @@
                     <td>${consultant.phoneNumber}</td>
                     <td>${consultant.country}</td>
                     <td>${consultant.job}</td>
-                    <td>${consultant.createdAt}</td>
                     <td>
                       <div class="inline-flex gap-2 items-center">
                         <div class="tooltip tooltip-top" data-tip="Edit">

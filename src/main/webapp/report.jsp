@@ -137,9 +137,6 @@
                   <th>Job</th>
                   <th>Country</th>
                   <th>Status</th>
-                  <th>Created At</th>
-                  <th class="sr-only">Edit</th>
-                  <th class="sr-only">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -156,7 +153,6 @@
                       <td>${appointment.job}</td>
                       <td>${appointment.country}</td>
                       <td>${appointment.status}</td>
-                      <td>${appointment.createdAt}</td>
                     </tr>
                   </tag:forEach>
                 </tag:if>
@@ -202,7 +198,6 @@
                   <th>Phone Number</th>
                   <th>Country</th>
                   <th>Job</th>
-                  <th>Created At</th>
                 </tr>
                 </thead>
                 <tbody class="whitespace-nowrap">
@@ -213,7 +208,6 @@
                   <td>${mostAppointedConsultant.phoneNumber}</td>
                   <td>${mostAppointedConsultant.country}</td>
                   <td>${mostAppointedConsultant.job}</td>
-                  <td>${mostAppointedConsultant.createdAt}</td>
                 </tr>
                 </tbody>
               </table>

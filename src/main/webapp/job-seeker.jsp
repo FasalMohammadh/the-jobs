@@ -121,7 +121,6 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th>Created At</th>
                 <th class="sr-only">Edit</th>
                 <th class="sr-only">Delete</th>
               </tr>
@@ -139,7 +138,6 @@
                     <td>${jobSeeker.firstName} ${jobSeeker.lastName}</td>
                     <td>${jobSeeker.email}</td>
                     <td>${jobSeeker.phoneNumber}</td>
-                    <td>${jobSeeker.createdAt}</td>
                     <td>
                       <div class="inline-flex gap-2 items-center">
                         <div class="tooltip tooltip-top" data-tip="Edit">
