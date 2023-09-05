@@ -18,7 +18,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
   @Override
   public boolean create(Appointment appointment) throws SQLException, ClassNotFoundException {
     Connection connection = getMysqlConnection();
-    String query = "INSERT INTO appointment(id,date_time, job, country, job_seeker_id, consultant_id, status) VALUES(?,?,?,?,?,?,?);";
+    String query = "call CreateAppointment(?,?,?,?,?,?,?)";
     PreparedStatement createStatement = connection.prepareStatement(query);
 
     createStatement.setString(1, appointment.getId());
@@ -39,7 +39,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
   @Override
   public boolean update(Appointment appointment) throws ClassNotFoundException, SQLException {
     Connection connection = getMysqlConnection();
-    String query = "UPDATE appointment SET date_time=?, job=?, country=?, job_seeker_id=?, consultant_id=?, status=? WHERE id=?;";
+    String query = "call UpdateAppointment(?,?,?,?,?,?,?)";
     PreparedStatement updateStatement = connection.prepareStatement(query);
 
     updateStatement.setTimestamp(1, Timestamp.valueOf(appointment.getDateTime()));
@@ -61,7 +61,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
   @Override
   public boolean delete(String id) throws SQLException, ClassNotFoundException {
     Connection connection = getMysqlConnection();
-    String query = "DELETE FROM appointment WHERE id=?";
+    String query = "call DeleteAppointment(?)";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
     deleteStatement.setString(1, id);
 
@@ -75,7 +75,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
   @Override
   public Appointment findUnique(String appointmentId) throws ClassNotFoundException, SQLException {
     Connection connection = getMysqlConnection();
-    String query = "SELECT * FROM appointment WHERE id=?";
+    String query = "call FindAppointment(?)";
     PreparedStatement findStatement = connection.prepareStatement(query);
 
     findStatement.setString(1, appointmentId);
@@ -99,7 +99,7 @@ public class AppointmentManagerImpl implements AppointmentManager {
   @Override
   public List<Appointment> findMany() throws ClassNotFoundException, SQLException {
     Connection connection = getMysqlConnection();
-    String query = "SELECT * FROM appointment";
+    String query = "call FindAppointments()";
     Statement findStatement = connection.createStatement();
 
     ResultSet result = findStatement.executeQuery(query);
