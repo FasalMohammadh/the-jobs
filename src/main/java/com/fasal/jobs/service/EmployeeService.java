@@ -3,7 +3,14 @@ package com.fasal.jobs.service;
 import com.fasal.jobs.dao.EmployeeManager;
 import com.fasal.jobs.dao.EmployeeManageImpl;
 import com.fasal.jobs.model.Employee;
+import com.fasal.jobs.util.helper.Helper;
+import com.fasal.jobs.util.validation.Validator;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 
@@ -25,4 +32,18 @@ public class EmployeeService {
     return getEmployeeManager().findUnique(id);
   }
 
+  public boolean login(String email, String password) throws ClassNotFoundException, SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+    boolean isValidEmail = Validator.getValidator().checkEmailValidity(email);
+    if (!isValidEmail) return false;
+
+    Employee employee = getEmployeeManager().findUnique(email);
+
+    if (employee == null) return false;
+
+    String encryptedPassword = Helper.getHelper().toEncrypted(password);
+    if (!(employee.getPassword().equals(encryptedPassword)))
+      return false;
+
+    return true;
+  }
 }

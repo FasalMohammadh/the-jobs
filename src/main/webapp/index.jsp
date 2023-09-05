@@ -12,7 +12,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./assets/index.css" rel="stylesheet"/>
   <script src="./assets/index.js" type="module"></script>
-  <script src="./assets/login.js" type="module"></script>
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -87,7 +86,7 @@
         icon: 'error',
         confirmButtonText: 'Close'
       }).then(() => {
-        window.location.replace("index.jsp")
+        window.location.replace("/home")
       })
     })
   }

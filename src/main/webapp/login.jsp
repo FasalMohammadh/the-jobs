@@ -94,7 +94,7 @@
         icon: 'error',
         confirmButtonText: 'Close'
       }).then(() => {
-        window.location.replace("index.jsp")
+        window.location.replace("login.jsp")
       })
     })
   }
