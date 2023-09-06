@@ -41,9 +41,6 @@ public class EmployeeService {
     if (employee == null) return false;
 
     String encryptedPassword = Helper.getHelper().toEncrypted(password);
-    if (!(employee.getPassword().equals(encryptedPassword)))
-      return false;
-
-    return true;
+    return employee.getPassword().equals(encryptedPassword);
   }
 }

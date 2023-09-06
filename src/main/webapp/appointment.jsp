@@ -403,7 +403,7 @@
   </form>
 </dialog>
 
-<form action="authentication" method="post" id="logout" class="hidden">
+<form action="employee" method="post" id="logout" class="hidden">
   <input type="hidden" name="actionType" value="LOGOUT"/>
 </form>
 

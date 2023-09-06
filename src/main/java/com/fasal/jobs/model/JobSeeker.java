@@ -6,6 +6,8 @@ public class JobSeeker extends Person {
   private String phoneNumber;
   private String createdAt;
 
+  private String password;
+
   public JobSeeker(String id, String email, String phoneNumber, String firstName, String lastName, String createdAt) {
     super(firstName, lastName);
 
@@ -22,6 +24,17 @@ public class JobSeeker extends Person {
     this.email = email;
     this.phoneNumber = phoneNumber;
   }
+
+  public JobSeeker(String id, String email, String phoneNumber, String firstName, String lastName, String password, String createdAt) {
+    super(firstName, lastName);
+
+    this.id = id;
+    this.email = email;
+    this.phoneNumber = phoneNumber;
+    this.password = password;
+    this.createdAt = createdAt;
+  }
+
 
   public String getId() {
     return id;
@@ -55,4 +68,11 @@ public class JobSeeker extends Person {
     this.createdAt = createdAt;
   }
 
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
 }

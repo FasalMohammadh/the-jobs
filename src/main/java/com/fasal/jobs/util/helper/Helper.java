@@ -1,6 +1,6 @@
 package com.fasal.jobs.util.helper;
 
-import com.fasal.jobs.model.Employee;
+import com.fasal.jobs.enums.SessionUser;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
@@ -48,9 +48,25 @@ public class Helper {
     return new String(plainText);
   }
 
-  public boolean isAuthorized(HttpSession session) {
-    Employee currentUser = (Employee) session.getAttribute("User");
-    return currentUser != null;
+  public void setUserSession(HttpSession session, SessionUser type, String email) {
+    session.setAttribute("type", type.toString());
+    session.setAttribute("email", email);
+  }
+
+  public void removeUserSession(HttpSession session) {
+    session.removeAttribute("type");
+    session.removeAttribute("email");
+  }
+
+  public boolean isLoggedAs(HttpSession session, SessionUser type) {
+    String sessionUser = (String) session.getAttribute("type");
+    if (sessionUser == null) return false;
+
+    if (SessionUser.valueOf(sessionUser).equals(type))
+      return true;
+
+    return false;
+
   }
 
 //  public <T> List<T> differnce(List<T> list , List<T> list2, BinaryOperator<boolean> compare = (T a, T b) -> boolean){
