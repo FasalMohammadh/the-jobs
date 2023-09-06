@@ -91,11 +91,11 @@
             </a>
           </li>
           <li>
-            <div>
+            <button class="group" type="submit" form="logout">
               <i
                 class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-            </div>
+            </button>
           </li>
         </ul>
       </div>
@@ -260,11 +260,11 @@
           </a>
         </li>
         <li>
-          <div class="group">
+          <button class="group" type="submit" form="logout">
             <i
               class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-          </div>
+          </button>
         </li>
       </ul>
     </div>
@@ -473,6 +473,10 @@
     </button>
   </section>
 </template>
+
+<form action="employee" method="post" id="logout" class="hidden">
+  <input type="hidden" name="actionType" value="LOGOUT"/>
+</form>
 
 <script defer type="module">
   import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';

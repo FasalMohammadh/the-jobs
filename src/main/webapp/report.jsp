@@ -12,6 +12,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./assets/index.css" rel="stylesheet"/>
   <script src="./assets/index.js" type="module"></script>
+  <script src="./assets/report.js" type="module"></script>
 </head>
 <body>
 <div class="drawer">
@@ -89,11 +90,11 @@
             </a>
           </li>
           <li>
-            <div>
+            <button class="group" type="submit" form="logout">
               <i
                 class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-            </div>
+            </button>
           </li>
         </ul>
       </div>
@@ -118,101 +119,108 @@
 
           </form>
         </section>
+
+
         <tag:if
           test="${appointments!=null && mostAppointedConsultant!=null && totalAppointments!=null && mostAppointedJob!=null && mostAppointedCountry!=null}">
 
-          <section class="w-full">
+          <div id="report-container">
 
+            <div>
+              <button id="report-pdf-download" class="btn btn-secondary">Download</button>
+            </div>
 
-            <header class="px-5 py-4">
-              <h2 class="font-semibold text-xl">Report</h2>
-            </header>
+            <section class="w-full">
+              <header class="px-5 py-4">
+                <h2 class="font-semibold text-xl">Report</h2>
+              </header>
 
-            <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
-              <table class="table table-zebra" aria-label="report">
-                <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Date Time</th>
-                  <th>Job</th>
-                  <th>Country</th>
-                  <th>Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tag:if test="${appointments==null}">
+              <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
+                <table class="table table-zebra" aria-label="report">
+                  <thead>
                   <tr>
-                    <td colspan="7" class="text-center">No records found.</td>
+                    <th>Id</th>
+                    <th>Date Time</th>
+                    <th>Job</th>
+                    <th>Country</th>
+                    <th>Status</th>
                   </tr>
-                </tag:if>
-                <tag:if test="${appointments!=null}">
-                  <tag:forEach var="appointment" items="${appointments}">
-                    <tr class="whitespace-nowrap">
-                      <td>${appointment.id}</td>
-                      <td>${appointment.dateTime}</td>
-                      <td>${appointment.job}</td>
-                      <td>${appointment.country}</td>
-                      <td>${appointment.status}</td>
+                  </thead>
+                  <tbody>
+                  <tag:if test="${appointments==null}">
+                    <tr>
+                      <td colspan="7" class="text-center">No records found.</td>
                     </tr>
-                  </tag:forEach>
-                </tag:if>
+                  </tag:if>
+                  <tag:if test="${appointments!=null}">
+                    <tag:forEach var="appointment" items="${appointments}">
+                      <tr class="whitespace-nowrap">
+                        <td>${appointment.id}</td>
+                        <td>${appointment.dateTime}</td>
+                        <td>${appointment.job}</td>
+                        <td>${appointment.country}</td>
+                        <td>${appointment.status}</td>
+                      </tr>
+                    </tag:forEach>
+                  </tag:if>
 
 
-                <tr>
-                  <td colspan="5" class="text-right font-bold">
-                    Most appointed Job
-                  </td>
-                  <td colspan="1">
-                      ${mostAppointedJob}
-                  </td>
-                </tr>
+                  <tr>
+                    <td colspan="5" class="text-right font-bold">
+                      Most appointed Job
+                    </td>
+                    <td colspan="1">
+                        ${mostAppointedJob}
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td colspan="5" class="text-right font-bold">
-                    Most appointed country
-                  </td>
-                  <td colspan="1">
-                      ${mostAppointedCountry}
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+                  <tr>
+                    <td colspan="5" class="text-right font-bold">
+                      Most appointed country
+                    </td>
+                    <td colspan="1">
+                        ${mostAppointedCountry}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
 
-            </div>
-          </section>
+              </div>
+            </section>
 
-          <section class="w-full">
+            <section class="w-full">
 
-            <header class="px-5 py-4">
-              <h2 class="text-lg font-semibold">Most appointed consultant</h2>
-            </header>
+              <header class="px-5 py-4">
+                <h2 class="text-lg font-semibold">Most appointed consultant</h2>
+              </header>
 
-            <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
+              <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
 
-              <table class="table table-zebra" aria-label="report">
-                <thead class="whitespace-nowrap">
-                <tr>
-                  <th>Id</th>
-                  <th>Full Name</th>
-                  <th>Email</th>
-                  <th>Phone Number</th>
-                  <th>Country</th>
-                  <th>Job</th>
-                </tr>
-                </thead>
-                <tbody class="whitespace-nowrap">
-                <tr>
-                  <td>${mostAppointedConsultant.id}</td>
-                  <td>${mostAppointedConsultant.firstName} ${mostAppointedConsultant.lastName}</td>
-                  <td>${mostAppointedConsultant.email}</td>
-                  <td>${mostAppointedConsultant.phoneNumber}</td>
-                  <td>${mostAppointedConsultant.country}</td>
-                  <td>${mostAppointedConsultant.job}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+                <table class="table table-zebra" aria-label="report">
+                  <thead class="whitespace-nowrap">
+                  <tr>
+                    <th>Id</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Country</th>
+                    <th>Job</th>
+                  </tr>
+                  </thead>
+                  <tbody class="whitespace-nowrap">
+                  <tr>
+                    <td>${mostAppointedConsultant.id}</td>
+                    <td>${mostAppointedConsultant.firstName} ${mostAppointedConsultant.lastName}</td>
+                    <td>${mostAppointedConsultant.email}</td>
+                    <td>${mostAppointedConsultant.phoneNumber}</td>
+                    <td>${mostAppointedConsultant.country}</td>
+                    <td>${mostAppointedConsultant.job}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          </div>
 
         </tag:if>
 
@@ -292,16 +300,21 @@
           </a>
         </li>
         <li>
-          <div class="group">
+          <button class="group" type="submit" form="logout">
             <i
               class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-          </div>
+          </button>
         </li>
       </ul>
     </div>
   </aside>
 </div>
+
+<form action="employee" method="post" id="logout" class="hidden">
+  <input type="hidden" name="actionType" value="LOGOUT"/>
+</form>
+
 
 <script defer type="module">
   import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';
