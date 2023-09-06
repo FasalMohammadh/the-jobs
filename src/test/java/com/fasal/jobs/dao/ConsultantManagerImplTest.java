@@ -120,6 +120,8 @@ class ConsultantManagerImplTest {
     if (isFirstCreated) {
       Consultant testConsultant = consultantManager.findUnique(consultant.getId());
       assertNotNull(testConsultant);
+      consultantManager.delete(consultant.getId()); // deletes the created entry
+
     } else {
       fail("First consultant creation failed.");
     }
@@ -143,6 +145,9 @@ class ConsultantManagerImplTest {
       assertNotNull(testConsultant.getCreatedAt());
       assertEquals(consultant.getCountry(), testConsultant.getCountry());
       assertEquals(consultant.getJob(), testConsultant.getJob());
+
+      consultantManager.delete(consultant.getId()); // deletes the created entry
+
     } else {
       fail("First consultant creation failed. (isFirstCreated)");
     }
