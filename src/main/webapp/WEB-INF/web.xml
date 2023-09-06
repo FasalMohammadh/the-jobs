@@ -3,7 +3,53 @@
     "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+  <display-name>The Jobs</display-name>
+
+  <filter>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <filter-class>com.fasal.jobs.filter.EmployeeRoutesFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/appointment</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/consultant</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/report</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/report.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/consultant.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/appointment.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/job-seeker.jsp</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>EmployeeRoutesFilter</filter-name>
+    <url-pattern>/job-seeker</url-pattern>
+  </filter-mapping>
+
   <servlet>
     <servlet-name>AppointmentController</servlet-name>
     <display-name>AppointmentController</display-name>
@@ -20,9 +66,9 @@
     <servlet-class>com.fasal.jobs.controller.ConsultantController</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>AuthenticationController</servlet-name>
-    <display-name>AuthenticationController</display-name>
-    <servlet-class>com.fasal.jobs.controller.AuthenticationController</servlet-class>
+    <servlet-name>EmployeeController</servlet-name>
+    <display-name>EmployeeController</display-name>
+    <servlet-class>com.fasal.jobs.controller.EmployeeController</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>ReportController</servlet-name>
@@ -51,8 +97,8 @@
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>AuthenticationController</servlet-name>
-    <url-pattern>/authentication</url-pattern>
+    <servlet-name>EmployeeController</servlet-name>
+    <url-pattern>/employee</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -62,7 +108,7 @@
 
   <servlet-mapping>
     <servlet-name>HomeController</servlet-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern>/home</url-pattern>
   </servlet-mapping>
 
 </web-app>

@@ -10,15 +10,11 @@ import com.fasal.jobs.util.database.DatabaseFactory;
 
 public class ConsultantManagerImpl implements ConsultantManager {
 
-  public ConsultantAvailabilityManager getConsultantAvailabilityManager() {
-    return new ConsultantAvailabilityManagerImpl();
-  }
-
   @Override
   public boolean create(Consultant consultant) throws SQLException, ClassNotFoundException {
 
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String query = "INSERT INTO consultant (id, first_name, last_name, email, phone_number,country,job) VALUES (?, ?, ?, ?, ?,?,?);";
+    String query = "call CreateConsultant(?,?,?,?,?,?,?)";
     PreparedStatement createStatement = connection.prepareStatement(query);
 
     createStatement.setString(1, consultant.getId());
@@ -40,14 +36,16 @@ public class ConsultantManagerImpl implements ConsultantManager {
   @Override
   public boolean update(Consultant consultant) throws ClassNotFoundException, SQLException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String query = "UPDATE consultant SET first_name = ?, last_name = ?, email = ?, phone_number = ? WHERE id = ?;";
+    String query = "call UpdateConsultant(?,?,?,?,?,?,?)";
     PreparedStatement updateStatement = connection.prepareStatement(query);
 
     updateStatement.setString(1, consultant.getFirstName());
     updateStatement.setString(2, consultant.getLastName());
     updateStatement.setString(3, consultant.getEmail());
     updateStatement.setString(4, consultant.getPhoneNumber());
-    updateStatement.setString(5, consultant.getId());
+    updateStatement.setString(5, consultant.getPhoneNumber());
+    updateStatement.setString(6, consultant.getCountry());
+    updateStatement.setString(7, consultant.getId());
 
     int result = updateStatement.executeUpdate();
     updateStatement.close();
@@ -59,7 +57,7 @@ public class ConsultantManagerImpl implements ConsultantManager {
   @Override
   public boolean delete(String id) throws SQLException, ClassNotFoundException {
     Connection connection = new DatabaseFactory().getDatabase(DatabaseType.MYSQL).getConnection();
-    String query = "DELETE FROM consultant WHERE id = ?;";
+    String query = "call DeleteConsultant(?)";
     PreparedStatement deleteStatement = connection.prepareStatement(query);
     deleteStatement.setString(1, id);
 

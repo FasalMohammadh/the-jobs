@@ -121,10 +121,7 @@
                 <th>Date Time</th>
                 <th>Job</th>
                 <th>Country</th>
-                <!-- <th>Job Seeker Id</th>
-                <th>Consultant Id</th> -->
                 <th>Status</th>
-                <th>Created At</th>
                 <th class="sr-only">Edit</th>
                 <th class="sr-only">Delete</th>
               </tr>
@@ -143,7 +140,6 @@
                     <td>${appointment.job}</td>
                     <td>${appointment.country}</td>
                     <td>${appointment.status}</td>
-                    <td>${appointment.createdAt}</td>
                     <td>
                       <div class="inline-flex gap-2 items-center">
                         <div class="tooltip tooltip-top" data-tip="Edit">
@@ -407,7 +403,7 @@
   </form>
 </dialog>
 
-<form action="authentication" method="post" id="logout" class="hidden">
+<form action="employee" method="post" id="logout" class="hidden">
   <input type="hidden" name="actionType" value="LOGOUT"/>
 </form>
 

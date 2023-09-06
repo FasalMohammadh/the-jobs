@@ -12,7 +12,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./assets/index.css" rel="stylesheet"/>
   <script src="./assets/index.js" type="module"></script>
-  <script src="./assets/login.js" type="module"></script>
+  <script src="./assets/register.js" type="module"></script>
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -28,8 +28,11 @@
         <a href="home" class="join-item btn btn-primary btn-outline px-10">
           Home
         </a>
-        <a href="login.jsp" class="join-item btn btn-primary btn-outline px-10 btn-active">
+        <a href="login.jsp" class="join-item btn btn-primary btn-outline px-10">
           Login
+        </a>
+        <a href="register.jsp" class="join-item btn btn-primary btn-outline px-10 btn-active ">
+          Register
         </a>
       </ul>
 
@@ -46,18 +49,48 @@
 <main class="flex items-center justify-center flex-1">
   <form
     action="job-seeker"
-    id="loginForm"
-    method="post" class="rounded-xl shadow-xl p-8 max-w-md w-full bg-base-300">
-    <h1 class="text-2xl font-medium mb-3 font-mont">Login</h1>
+    id="register-form"
+    method="post" class="rounded-xl shadow-xl p-8 max-w-xl w-full bg-base-300">
+    <h1 class="text-2xl font-medium mb-3 font-mont">Register</h1>
 
-    <div class="grid gap-4">
-      <input type="hidden" name="actionType" value="LOGIN"/>
+    <div class="grid gap-3 md:grid-cols-2">
+      <input type="hidden" name="actionType" value="REGISTER"/>
+
+      <div class="form-control w-full">
+        <label class="label" for="firstName">
+          <span class="label-text">First Name</span>
+        </label>
+        <input id="firstName" name="firstName" type="text" class="input input-bordered w-full"/>
+        <label class="label">
+          <span class="label-text-alt"></span>
+        </label>
+      </div>
+
+      <div class="form-control w-full">
+        <label class="label" for="lastName">
+          <span class="label-text">LastName</span>
+        </label>
+        <input id="lastName" name="lastName" type="text" class="input input-bordered w-full"/>
+        <label class="label">
+          <span class="label-text-alt"></span>
+        </label>
+      </div>
 
       <div class="form-control w-full">
         <label class="label" for="email">
           <span class="label-text">Email</span>
         </label>
         <input inputmode="email" id="email" name="email" type="text" class="input input-bordered w-full"/>
+        <label class="label">
+          <span class="label-text-alt"></span>
+        </label>
+      </div>
+
+      <div class="form-control w-full">
+        <label class="label" for="phoneNumber">
+          <span class="label-text">Phone number</span>
+        </label>
+        <input inputmode="tel" id="phoneNumber" name="phoneNumber" type="tel" class="input input-bordered w-full"/>
         <label class="label">
           <span class="label-text-alt"></span>
         </label>
@@ -73,10 +106,20 @@
         </label>
       </div>
 
+      <div class="form-control w-full">
+        <label class="label" for="confirmPassword">
+          <span class="label-text">Confirm password</span>
+        </label>
+        <input id="confirmPassword" name="confirmPassword" type="password" class="input input-bordered w-full"/>
+        <label class="label">
+          <span class="label-text-alt"></span>
+        </label>
+      </div>
+
     </div>
     <div class="w-fit ml-auto grid grid-cols-2 gap-2">
       <button type="reset" class="btn btn-neutral">Clear</button>
-      <button type="submit" class="btn btn-primary">Login</button>
+      <button type="submit" class="btn btn-primary">Register</button>
     </div>
   </form>
 </main>

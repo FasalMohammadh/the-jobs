@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasal.jobs.enums.ActionType;
 import com.fasal.jobs.enums.Day;
+import com.fasal.jobs.enums.SessionUser;
 import com.fasal.jobs.model.Consultant;
 import com.fasal.jobs.model.ConsultantAvailability;
 import com.fasal.jobs.service.ConsultantService;
@@ -45,13 +46,6 @@ public class ConsultantController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
-      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
-
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-        return;
-      }
-
       String id = UUID.randomUUID().toString();
       String email = request.getParameter("email");
       String phoneNumber = request.getParameter("phoneNumber");
@@ -95,13 +89,6 @@ public class ConsultantController extends HttpServlet {
     boolean hasErrored = false;
     String feedback = null;
     try {
-      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
-
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-        return;
-      }
-
       String id = request.getParameter("id");
       String email = request.getParameter("email");
       String phoneNumber = request.getParameter("phoneNumber");
@@ -152,13 +139,6 @@ public class ConsultantController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
-      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
-
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-        return;
-      }
-
       String id = request.getParameter("id");
       boolean isDeleted = ConsultantService.getService().delete(id);
       if (!isDeleted) {
@@ -183,16 +163,12 @@ public class ConsultantController extends HttpServlet {
     String consultantId = request.getParameter("consultantId");
 
     try {
-      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
 
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-      } else {
-        Consultant consultant = ConsultantService.getService().findUnique(consultantId);
-        request.setAttribute("consultant", consultant);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("admin-consultant.jsp");
-        requestDispatcher.forward(request, response);
-      }
+      Consultant consultant = ConsultantService.getService().findUnique(consultantId);
+      request.setAttribute("consultant", consultant);
+      RequestDispatcher requestDispatcher = request.getRequestDispatcher("admin-consultant.jsp");
+      requestDispatcher.forward(request, response);
+
     } catch (ClassNotFoundException | SQLException e) {
       e.printStackTrace();
     }
@@ -202,16 +178,11 @@ public class ConsultantController extends HttpServlet {
           throws ServletException, IOException {
     HttpSession session = request.getSession();
     try {
-      boolean isAuthorized = Helper.getHelper().isAuthorized(request.getSession());
+      List<Consultant> consultants = ConsultantService.getService().findMany();
+      request.setAttribute("consultants", consultants.isEmpty() ? null : consultants);
+      RequestDispatcher requestDispatcher = request.getRequestDispatcher("consultant.jsp");
+      requestDispatcher.forward(request, response);
 
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-      } else {
-        List<Consultant> consultants = ConsultantService.getService().findMany();
-        request.setAttribute("consultants", consultants.isEmpty() ? null : consultants);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("consultant.jsp");
-        requestDispatcher.forward(request, response);
-      }
     } catch (ClassNotFoundException | SQLException exception) {
       exception.printStackTrace();
     } finally {

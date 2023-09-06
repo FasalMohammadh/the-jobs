@@ -8,10 +8,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home</title>
+  <title>Login</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./assets/index.css" rel="stylesheet"/>
   <script src="./assets/index.js" type="module"></script>
+  <script src="./assets/login.js" type="module"></script>
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -24,10 +25,10 @@
     </div>
     <div class="flex-none gap-2">
       <ul class="mr-5 join">
-        <a href="home" class="join-item btn btn-primary btn-outline px-10 btn-active">
+        <a href="home" class="join-item btn btn-primary btn-outline px-10">
           Home
         </a>
-        <a href="login.jsp" class="join-item btn btn-primary btn-outline px-10">
+        <a href="login.jsp" class="join-item btn btn-primary btn-outline px-10 btn-active">
           Login
         </a>
       </ul>
@@ -42,35 +43,42 @@
   </div>
 </header>
 
-<main class="flex items-center justify-center mt-10">
-  <tag:if test="${consultants==null}">
-    <h1 colspan="7" class="text-center text-xl">No consultants found.</h1>
-  </tag:if>
-  <tag:if test="${consultants!=null}">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl gap-3">
-      <tag:forEach var="consultant" items="${consultants}">
-        <div class="max-w-lg bg-base-200 rounded-lg shadow-md p-5 w-full">
-          <h2 class="text-center text-2xl font-semibold mt-3">${consultant.firstName} ${consultant.lastName}</h2>
-          <p class="text-center text-gray-600 mt-1">Specialized: ${consultant.job}, ${consultant.country}</p>
+<main class="flex items-center justify-center flex-1">
+  <form
+    action="employee"
+    id="loginForm"
+    method="post" class="rounded-xl shadow-xl p-8 max-w-md w-full bg-base-300">
+    <h1 class="text-2xl font-medium mb-3 font-mont">Login</h1>
 
-          <div class="mt-5">
-            <h3 class="text-xl font-semibold mb-2">Availability</h3>
+    <div class="grid gap-4">
+      <input type="hidden" name="actionType" value="LOGIN"/>
 
-            <ul class="flex flex-col gap-1">
-              <tag:forEach var="availability" items="${consultant.availability}" varStatus="loop">
-                <li class="flex items-center gap-3">
-                  <p class="text-center">${availability.day}</p>
-                  <p class="text-center whitespace-nowrap">${availability.startTime} - ${availability.endTime}</p>
-                </li>
-              </tag:forEach>
-            </ul>
-          </div>
-        </div>
+      <div class="form-control w-full">
+        <label class="label" for="email">
+          <span class="label-text">Email</span>
+        </label>
+        <input inputmode="email" id="email" name="email" type="text" class="input input-bordered w-full"/>
+        <label class="label">
+          <span class="label-text-alt"></span>
+        </label>
+      </div>
 
-      </tag:forEach>
+      <div class="form-control w-full">
+        <label class="label" for="password">
+          <span class="label-text">Password</span>
+        </label>
+        <input id="password" name="password" type="password" class="input input-bordered w-full"/>
+        <label class="label">
+          <span class="label-text-alt"></span>
+        </label>
+      </div>
+
     </div>
-  </tag:if>
-
+    <div class="w-fit ml-auto grid grid-cols-2 gap-2">
+      <button type="reset" class="btn btn-neutral">Clear</button>
+      <button type="submit" class="btn btn-primary">Login</button>
+    </div>
+  </form>
 </main>
 
 
@@ -86,7 +94,7 @@
         icon: 'error',
         confirmButtonText: 'Close'
       }).then(() => {
-        window.location.replace("/home")
+        window.location.replace("login.jsp")
       })
     })
   }

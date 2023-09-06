@@ -90,11 +90,11 @@
             </a>
           </li>
           <li>
-            <div>
+            <button class="group" type="submit" form="logout">
               <i
                 class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
               <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-            </div>
+            </button>
           </li>
         </ul>
       </div>
@@ -121,7 +121,6 @@
                 <th>Full Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th>Created At</th>
                 <th class="sr-only">Edit</th>
                 <th class="sr-only">Delete</th>
               </tr>
@@ -139,7 +138,6 @@
                     <td>${jobSeeker.firstName} ${jobSeeker.lastName}</td>
                     <td>${jobSeeker.email}</td>
                     <td>${jobSeeker.phoneNumber}</td>
-                    <td>${jobSeeker.createdAt}</td>
                     <td>
                       <div class="inline-flex gap-2 items-center">
                         <div class="tooltip tooltip-top" data-tip="Edit">
@@ -240,11 +238,11 @@
           </a>
         </li>
         <li>
-          <div class="group">
+          <button class="group" type="submit" form="logout">
             <i
               class="bi bi-box-arrow-right group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
             <p class="text-base-content leading-4 group-hover:text-indigo-600">Logout</p>
-          </div>
+          </button>
         </li>
       </ul>
     </div>
@@ -332,6 +330,11 @@
     <button>close</button>
   </form>
 </dialog>
+
+<form action="employee" method="post" id="logout" class="hidden">
+  <input type="hidden" name="actionType" value="LOGOUT"/>
+</form>
+
 
 <script defer type="module">
     import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11.7.27/+esm';

@@ -1,6 +1,8 @@
 package com.fasal.jobs.controller;
 
-import com.fasal.jobs.service.AuthenticationService;
+import com.fasal.jobs.enums.SessionUser;
+import com.fasal.jobs.service.EmployeeService;
+import com.fasal.jobs.util.helper.Helper;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,10 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AuthenticationController extends HttpServlet {
+public class EmployeeController extends HttpServlet {
 
-  private AuthenticationService getAuthenticationService() {
-    return AuthenticationService.getService();
+  private EmployeeService getEmployeeService() {
+    return EmployeeService.getService();
+  }
+
+  private static Helper getHelper() {
+    return Helper.getHelper();
   }
 
   @Override
@@ -38,9 +44,10 @@ public class AuthenticationController extends HttpServlet {
 
 
     try {
-      isAuthenticated = getAuthenticationService().login(email, password, request.getSession());
+      isAuthenticated = getEmployeeService().login(email, password);
 
       if (isAuthenticated) {
+        getHelper().setUserSession(request.getSession(), SessionUser.EMPLOYEE, email);
         response.sendRedirect("appointment");
       } else {
         feedback = "Entered email or password incorrect.";
@@ -58,24 +65,12 @@ public class AuthenticationController extends HttpServlet {
 
   }
 
+
   public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-    String feedback = null;
-    boolean isLoggedOut = false;
-    try {
-      isLoggedOut = getAuthenticationService().logout(request.getSession());
+    getHelper().removeUserSession(request.getSession());
 
-      if (isLoggedOut) response.sendRedirect("login.jsp");
-      else
-        feedback = "Unable to logout, Something is wrong.";
-
-    } catch (IOException e) {
-      feedback = "Unable to logout, Something is wrong.";
-    } finally {
-      if (!isLoggedOut) {
-        request.setAttribute("feedback", feedback);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("appointment.jsp");
-        requestDispatcher.forward(request, response);
-      }
-    }
+    RequestDispatcher requestDispatcher = request.getRequestDispatcher("employee-login.jsp");
+    requestDispatcher.forward(request, response);
   }
+
 }
