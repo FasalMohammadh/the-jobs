@@ -45,7 +45,7 @@
 
 <main class="flex items-center justify-center flex-1">
   <form
-    action="job-seeker"
+    action="employee"
     id="loginForm"
     method="post" class="rounded-xl shadow-xl p-8 max-w-md w-full bg-base-300">
     <h1 class="text-2xl font-medium mb-3 font-mont">Login</h1>
