@@ -1,7 +1,7 @@
 package com.fasal.jobs.service;
 
 import com.fasal.jobs.dao.EmployeeManager;
-import com.fasal.jobs.dao.EmployeeManageImpl;
+import com.fasal.jobs.dao.EmployeeManagerImpl;
 import com.fasal.jobs.model.Employee;
 import com.fasal.jobs.util.helper.Helper;
 import com.fasal.jobs.util.validation.Validator;
@@ -25,7 +25,7 @@ public class EmployeeService {
   }
 
   private EmployeeManager getEmployeeManager() {
-    return new EmployeeManageImpl();
+    return new EmployeeManagerImpl();
   }
 
   public Employee findUnique(String id) throws ClassNotFoundException, SQLException {

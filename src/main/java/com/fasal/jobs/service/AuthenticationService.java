@@ -1,6 +1,6 @@
 package com.fasal.jobs.service;
 
-import com.fasal.jobs.dao.EmployeeManageImpl;
+import com.fasal.jobs.dao.EmployeeManagerImpl;
 import com.fasal.jobs.dao.EmployeeManager;
 import com.fasal.jobs.model.Employee;
 import com.fasal.jobs.util.helper.Helper;
@@ -29,7 +29,7 @@ public class AuthenticationService {
   }
 
   private EmployeeManager getEmployeeManager() {
-    return new EmployeeManageImpl();
+    return new EmployeeManagerImpl();
   }
 
   public boolean login(String email, String password, HttpSession session) throws SQLException, ClassNotFoundException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
