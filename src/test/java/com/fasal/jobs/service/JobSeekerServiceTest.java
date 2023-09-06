@@ -37,6 +37,8 @@ class JobSeekerServiceTest {
   void createTestNullJobSeeker() throws SQLException, ClassNotFoundException {
     boolean isCreated=service.create(jobSeeker);
     assertTrue(isCreated,"JobSeekerService.create() returned false on valid jobseeker object");
+
+    service.delete(jobSeeker.getId());
   }
 
 }
