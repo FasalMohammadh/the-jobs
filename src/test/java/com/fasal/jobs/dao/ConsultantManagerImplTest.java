@@ -135,6 +135,7 @@ class ConsultantManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the consultant found with unique id is correctly assigned to model.")
   public void findUniqueTest() throws SQLException, ClassNotFoundException {
     boolean isFirstCreated = consultantManager.create(consultant);

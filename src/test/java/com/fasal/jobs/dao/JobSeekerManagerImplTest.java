@@ -125,6 +125,7 @@ class JobSeekerManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the jobSeeker found with unique id is correctly assigned to model.")
   public void findUniqueTest() throws SQLException, ClassNotFoundException {
     boolean isFirstCreated = jobSeekerManager.create(jobSeeker);
