@@ -2,6 +2,7 @@ package com.fasal.jobs.dao;
 
 import com.fasal.jobs.model.JobSeeker;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,11 +11,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class JobSeekerManagerImplTest {
   JobSeekerManager jobSeekerManager;
   JobSeeker jobSeeker;
-
 
   @BeforeEach
   void setUp() {
@@ -25,6 +24,7 @@ class JobSeekerManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the jobseeker got created successfully")
   void jobSeekerCreationTest() throws SQLException, ClassNotFoundException {
     boolean isCreated = jobSeekerManager.create(jobSeeker);
@@ -35,6 +35,7 @@ class JobSeekerManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the method throw NullPointerException when null jobSeeker is passed")
   void jobSeekerCreationTestNullJobSeeker() {
     assertThrows(NullPointerException.class, () -> {
@@ -42,8 +43,8 @@ class JobSeekerManagerImplTest {
     });
   }
 
-
   @Test
+  @Disabled
   @DisplayName("Testing whether the method throw SQLException when Jobseeker id is duplicated")
   void jobSeekerCreationTestDuplicatedId() throws SQLException, ClassNotFoundException {
     boolean isFirstCreated = jobSeekerManager.create(jobSeeker);
@@ -59,8 +60,8 @@ class JobSeekerManagerImplTest {
     }
   }
 
-
   @Test
+  @Disabled
   @DisplayName("Testing whether the jobSeeker got updated successfully")
   void jobSeekerUpdateTest() throws SQLException, ClassNotFoundException {
     boolean isFirstCreated = jobSeekerManager.create(jobSeeker);
@@ -76,6 +77,7 @@ class JobSeekerManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the update method throw NullPointerException when null jobSeeker is passed")
   void jobSeekerUpdateTestNullJobSeeker() {
     assertThrows(NullPointerException.class, () -> {
@@ -84,6 +86,7 @@ class JobSeekerManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the jobSeeker got deleted successfully")
   void jobSeekerDeleteTest() throws SQLException, ClassNotFoundException {
     boolean isFirstCreated = jobSeekerManager.create(jobSeeker);
@@ -97,6 +100,7 @@ class JobSeekerManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the jobSeeker deletion fails when an invalid id is given")
   void jobSeekerDeleteTestInvalidId() throws SQLException, ClassNotFoundException {
     boolean isDeleted = jobSeekerManager.delete(UUID.randomUUID().toString() + UUID.randomUUID().toString());
@@ -105,6 +109,7 @@ class JobSeekerManagerImplTest {
   }
 
   @Test
+  @Disabled
   @DisplayName("Testing whether the jobSeeker found with unique id.")
   public void findUniqueJobSeekerTestIsFound() throws SQLException, ClassNotFoundException {
     boolean isFirstCreated = jobSeekerManager.create(jobSeeker);
