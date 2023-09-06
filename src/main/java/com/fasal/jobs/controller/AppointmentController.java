@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasal.jobs.enums.ActionType;
 import com.fasal.jobs.enums.AppointmentStatus;
+import com.fasal.jobs.enums.SessionUser;
 import com.fasal.jobs.model.Appointment;
 import com.fasal.jobs.model.Consultant;
 import com.fasal.jobs.model.JobSeeker;
@@ -37,9 +38,6 @@ public class AppointmentController extends HttpServlet {
     return JobSeekerService.getService();
   }
 
-  private boolean checkIsAuthorized(HttpSession session) throws SQLException, ClassNotFoundException {
-    return Helper.getHelper().isAuthorized(session);
-  }
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -67,13 +65,6 @@ public class AppointmentController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
-      boolean isAuthorized = checkIsAuthorized(request.getSession());
-
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-        return;
-      }
-
       String id = UUID.randomUUID().toString();
       String date = request.getParameter("date");
       String time = request.getParameter("time");
@@ -110,12 +101,6 @@ public class AppointmentController extends HttpServlet {
     boolean hasErrored = false;
 
     try {
-      boolean isAuthorized = checkIsAuthorized(request.getSession());
-
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-        return;
-      }
 
       String id = request.getParameter("id");
       String date = request.getParameter("date");
@@ -153,13 +138,6 @@ public class AppointmentController extends HttpServlet {
     String feedback = null;
     boolean hasErrored = false;
     try {
-      boolean isAuthorized = checkIsAuthorized(request.getSession());
-
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-        return;
-      }
-
       String id = request.getParameter("id");
       boolean isDeleted = getAppointmentService().delete(id);
 
@@ -185,13 +163,6 @@ public class AppointmentController extends HttpServlet {
     HttpSession session = request.getSession();
 
     try {
-      boolean isAuthorized = checkIsAuthorized(request.getSession());
-
-      if (!isAuthorized) {
-        response.sendRedirect("login.jsp");
-        return;
-      }
-
       List<Appointment> appointments = getAppointmentService().findMany();
       List<Consultant> consultants = getConsultantService().findMany();
       List<JobSeeker> jobSeekers = getJobSeekerService().findMany();
