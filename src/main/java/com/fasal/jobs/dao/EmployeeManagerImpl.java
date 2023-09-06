@@ -25,7 +25,16 @@ public class EmployeeManagerImpl implements EmployeeManager {
     findStatement.setString(1, email);
     ResultSet result = findStatement.executeQuery();
 
-    Employee employee = getEmployeeFromResultSet(result);
+    Employee employee = null;
+    if (result.next())
+      employee = new Employee(
+          result.getString("id"),
+          result.getString("first_name"),
+          result.getString("last_name"),
+          result.getString("email"),
+          result.getString("password"),
+          result.getString("role"),
+          result.getString("created_at"));
 
     result.close();
     findStatement.close();
@@ -34,19 +43,4 @@ public class EmployeeManagerImpl implements EmployeeManager {
     return employee;
   }
 
-  public Employee getEmployeeFromResultSet(ResultSet result) throws SQLException {
-    Employee employee = null;
-    if (result.next())
-      employee = new Employee(
-              result.getString("id"),
-              result.getString("first_name"),
-              result.getString("last_name"),
-              result.getString("email"),
-              result.getString("password"),
-              result.getString("role"),
-              result.getString("created_at")
-      );
-
-    return employee;
-  }
 }
