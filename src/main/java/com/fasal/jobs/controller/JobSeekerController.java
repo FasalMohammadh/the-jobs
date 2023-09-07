@@ -184,7 +184,6 @@ public class JobSeekerController extends HttpServlet {
 
   private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     String feedback = null;
-    boolean hasErrored = false;
 
     try {
       String email = request.getParameter("email");
@@ -192,24 +191,20 @@ public class JobSeekerController extends HttpServlet {
 
       boolean isLoggedIn = getJobSeekerService().login(email, password);
       if (!isLoggedIn) {
-        hasErrored = true;
         feedback = "Something went wrong, Failed to login.";
       } else {
         Helper.getHelper().setUserSession(request.getSession(), SessionUser.JOB_SEEKER, email);
-        // TODO redirect
+        feedback = "This functionality has not yet been implemented.";
       }
 
     } catch (Exception e) {
-      hasErrored = true;
       feedback = "Something went wrong, Failed to login.";
       e.printStackTrace();
     } finally {
-      if (hasErrored) {
-        request.setAttribute("feedback", feedback);
+      request.setAttribute("feedback", feedback);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-        dispatcher.forward(request, response);
-      }
+      RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+      dispatcher.forward(request, response);
     }
   }
 }

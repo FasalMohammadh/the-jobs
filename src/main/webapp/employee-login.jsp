@@ -16,33 +16,6 @@
 </head>
 <body class="min-h-screen flex flex-col">
 
-<header>
-  <div class="navbar bg-base-300 px-5">
-    <div class="flex-1">
-      <h1 class="font-bold text-lg lg:text-3xl text-primary">
-        The Jobs<span class="text-secondary">.</span>
-      </h1>
-    </div>
-    <div class="flex-none gap-2">
-      <ul class="mr-5 join">
-        <a href="home" class="join-item btn btn-primary btn-outline px-10">
-          Home
-        </a>
-        <a href="login.jsp" class="join-item btn btn-primary btn-outline px-10 btn-active">
-          Login
-        </a>
-      </ul>
-
-      <label class="swap btn btn-circle" aria-label="theme toggler">
-        <input type="checkbox" data-theme="toggler"/>
-        <i class="bi bi-moon text-xl swap-off"></i>
-        <i class="bi bi-sun text-xl swap-on"></i>
-      </label>
-
-    </div>
-  </div>
-</header>
-
 <main class="flex items-center justify-center flex-1">
   <form
     action="employee"

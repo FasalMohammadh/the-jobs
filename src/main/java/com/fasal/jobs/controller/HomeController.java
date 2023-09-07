@@ -31,7 +31,7 @@ public class HomeController extends HttpServlet {
       feedback = "Something went wrong, please try again later.";
     } finally {
       request.setAttribute("feedback", feedback);
-      RequestDispatcher requestDispatcher = request.getRequestDispatcher("/home");
+      RequestDispatcher requestDispatcher = request.getRequestDispatcher("/index.jsp");
       requestDispatcher.forward(request, response);
 
       clearFeedback();
