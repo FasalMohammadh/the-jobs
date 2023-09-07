@@ -23,24 +23,40 @@
         The Jobs<span class="text-secondary">.</span>
       </h1>
     </div>
-    <div class="flex-none gap-2">
-      <ul class="mr-5 join">
-        <a href="home" class="join-item btn btn-primary btn-outline px-10">
-          Home
-        </a>
-        <a href="login.jsp" class="join-item btn btn-primary btn-outline px-10">
-          Login
-        </a>
-        <a href="register.jsp" class="join-item btn btn-primary btn-outline px-10 btn-active ">
-          Register
-        </a>
-      </ul>
+    <ul class="mr-5 join">
+      <a href="home" class="hidden md:flex join-item btn btn-primary btn-outline px-10">
+        Home
+      </a>
+      <a href="home" class="md:hidden join-item btn btn-circle">
+        <i class=" bi bi-house"></i>
+      </a>
+
+      <a href="login.jsp" class="hidden md:flex join-item btn btn-primary btn-outline px-10">
+        Login
+      </a>
+      <a href="login.jsp" class="md:hidden join-item btn btn-circle">
+        <i class="bi bi-box-arrow-in-right"></i>
+      </a>
+
+      <a href="register.jsp" class="hidden md:flex join-item btn btn-primary btn-outline px-10 btn-active">
+        Register
+      </a>
+      <a href="register.jsp" class="md:hidden join-item btn btn-circle btn-active">
+        <i class="bi bi-person-add"></i>
+      </a>
+    </ul>
 
       <label class="swap btn btn-circle" aria-label="theme toggler">
         <input type="checkbox" data-theme="toggler"/>
         <i class="bi bi-moon text-xl swap-off"></i>
         <i class="bi bi-sun text-xl swap-on"></i>
       </label>
+
+      <div class="tooltip tooltip-left" data-tip="Employee">
+        <a href="employee-login.jsp" class="join-item btn btn-circle px-10">
+          <i class="bi bi-person-lock text-xl"></i>
+        </a>
+      </div>
 
     </div>
   </div>

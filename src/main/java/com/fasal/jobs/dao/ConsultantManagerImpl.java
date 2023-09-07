@@ -43,8 +43,8 @@ public class ConsultantManagerImpl implements ConsultantManager {
     updateStatement.setString(2, consultant.getLastName());
     updateStatement.setString(3, consultant.getEmail());
     updateStatement.setString(4, consultant.getPhoneNumber());
-    updateStatement.setString(5, consultant.getPhoneNumber());
-    updateStatement.setString(6, consultant.getCountry());
+    updateStatement.setString(5, consultant.getCountry());
+    updateStatement.setString(6, consultant.getJob());
     updateStatement.setString(7, consultant.getId());
 
     int result = updateStatement.executeUpdate();
