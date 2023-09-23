@@ -10,6 +10,8 @@ import com.fasal.jobs.model.Appointment;
 public class AppointmentService {
   private static AppointmentService appointmentService;
 
+  private AppointmentService (){}
+
   public static synchronized AppointmentService getService() {
     if (appointmentService == null)
       appointmentService = new AppointmentService();

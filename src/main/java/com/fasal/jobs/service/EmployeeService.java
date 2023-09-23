@@ -17,6 +17,8 @@ import java.sql.SQLException;
 public class EmployeeService {
   private static EmployeeService employeeService;
 
+  private EmployeeService(){}
+
   public static synchronized EmployeeService getService() {
     if (employeeService == null)
       employeeService = new EmployeeService();

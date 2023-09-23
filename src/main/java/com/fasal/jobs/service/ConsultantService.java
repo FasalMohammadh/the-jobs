@@ -15,6 +15,8 @@ import com.fasal.jobs.util.validation.Validator;
 public class ConsultantService {
   private static ConsultantService consultantService;
 
+  private ConsultantService() {}
+
   public static synchronized ConsultantService getService() {
     if (consultantService == null)
       consultantService = new ConsultantService();

@@ -17,6 +17,8 @@ import java.sql.SQLException;
 public class AuthenticationService {
   private static AuthenticationService authenticationService;
 
+  private AuthenticationService(){}
+
   public static synchronized AuthenticationService getService() {
     if (authenticationService == null)
       authenticationService = new AuthenticationService();

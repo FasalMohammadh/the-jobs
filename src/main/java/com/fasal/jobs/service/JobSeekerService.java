@@ -19,6 +19,8 @@ import javax.crypto.NoSuchPaddingException;
 public class JobSeekerService {
   private static JobSeekerService jobSeekerService;
 
+  private JobSeekerService(){}
+
   public static synchronized JobSeekerService getService() {
     if (jobSeekerService == null)
       jobSeekerService = new JobSeekerService();
