@@ -29,10 +29,15 @@ public class JobSeekerController extends HttpServlet {
     return JobSeekerService.getService();
   }
 
+  private static Helper getHelper() {
+    return Helper.getHelper();
+  }
+
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     getJobSeekers(request, response);
   }
+
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -43,6 +48,7 @@ public class JobSeekerController extends HttpServlet {
       case DELETE -> deleteJobSeeker(request, response);
       case LOGIN -> login(request, response);
       case REGISTER -> register(request, response);
+      case LOGOUT -> logout(request, response);
     }
   }
 
@@ -184,27 +190,35 @@ public class JobSeekerController extends HttpServlet {
 
   private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     String feedback = null;
-
+    boolean isLoggedIn = false;
     try {
       String email = request.getParameter("email");
       String password = request.getParameter("password");
 
-      boolean isLoggedIn = getJobSeekerService().login(email, password);
+      isLoggedIn = getJobSeekerService().login(email, password);
       if (!isLoggedIn) {
         feedback = "Something went wrong, Failed to login.";
       } else {
         Helper.getHelper().setUserSession(request.getSession(), SessionUser.JOB_SEEKER, email);
-        feedback = "This functionality has not yet been implemented.";
+        response.sendRedirect("job-seeker-appointment.jsp");
       }
 
     } catch (Exception e) {
       feedback = "Something went wrong, Failed to login.";
       e.printStackTrace();
     } finally {
-      request.setAttribute("feedback", feedback);
+      if (!isLoggedIn) {
+        request.setAttribute("feedback", feedback);
 
-      RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-      dispatcher.forward(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+        dispatcher.forward(request, response);
+      }
     }
   }
+
+  public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    getHelper().removeUserSession(request.getSession());
+    response.sendRedirect("login.jsp");
+  }
 }
+

@@ -26,7 +26,7 @@ public class EmployeeRoutesFilter implements Filter {
     boolean isJobSeekerLoginRequest = req.getRequestURL().toString().contains("/job-seeker");
     String actionType = req.getParameter("actionType");
     if (isJobSeekerLoginRequest && actionType != null &&
-            (ActionType.valueOf(actionType) == ActionType.LOGIN || ActionType.valueOf(actionType) == ActionType.REGISTER)) {
+            (ActionType.valueOf(actionType) == ActionType.LOGIN || ActionType.valueOf(actionType) == ActionType.REGISTER || ActionType.valueOf(actionType) == ActionType.LOGOUT)) {
       chain.doFilter(request, response);
       return;
     }

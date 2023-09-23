@@ -68,7 +68,6 @@ function clearErrors(form, data, formHelperTextSelector) {
 
   Object.keys(data).forEach(key => {
     const input = form.querySelector(`[name="${key}"]`);
-    console.log(input);
     input.classList.remove('input-error');
     const helperText = formHelperTextSelectorDefault(input);
     helperText.textContent = '';

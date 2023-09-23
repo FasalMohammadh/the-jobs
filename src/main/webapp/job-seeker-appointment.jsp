@@ -8,11 +8,11 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Manage JobSeekers</title>
+  <title>JobSeeker Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="./assets/index.css" rel="stylesheet"/>
   <script src="./assets/index.js" type="module"></script>
-  <script src="./assets/appointment.js" type="module"></script>
+  <script src="./assets/job-seeker-appointment.js" type="module"></script>
 </head>
 <body>
 <div class="drawer">
@@ -50,45 +50,9 @@
               </div>
             </a>
           </li>
-          <li>
-            <a href="report.jsp" class="group">
-              <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-              <div>
-                <p class="text-base-content leading-4 group-hover:text-primary">Reports</p>
-                <span class="text-sm dark:text-slate-500">Generate Reports</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="consultant" class="group">
-              <i class="bi bi-people group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-              <div>
-                <p class="text-base-content leading-4 group-hover:text-indigo-600">
-                  Consultants
-                </p>
-                <span class="text-sm dark:text-slate-500">Manage Consultants</span>
-              </div>
-            </a>
-          </li>
-
-          <li>
-            <a href="job-seeker" class="group">
-              <i class="bi bi-people  group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-              <div>
-                <p class="leading-4 group-hover:text-indigo-600">Job Seekers</p>
-                <span class="text-sm dark:text-slate-500">Manage Job Seekers</span>
-              </div>
-            </a>
-          </li>
         </ul>
         <div class="divider m-2"></div>
         <ul class="menu menu-vertical gap-2">
-          <li>
-            <a href="setting.html" class="group">
-              <i class="bi bi-gear group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-              <p class="text-base-content leading-4 group-hover:text-indigo-600">Settings</p>
-            </a>
-          </li>
           <li>
             <button class="group" type="submit" form="logout">
               <i
@@ -194,51 +158,17 @@
 
       <ul class="menu menu-vertical font-poppins gap-2">
         <li>
-          <a href="appointment" class="active">
+          <a href="job-seeker-appointment.jsp" class="active">
             <i class="bi bi-file-earmark text-primary-focus text-2xl w-8 h-8"></i>
             <div>
               <p class="leading-4 text-primary">Appointments</p>
-              <span class="text-sm dark:text-slate-500">Manage Appointments</span>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="report.jsp" class="group">
-            <i class="bi bi-file-medical group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-            <div>
-              <p class="text-base-content leading-4 group-hover:text-primary">Reports</p>
-              <span class="text-sm dark:text-slate-500">Generate Reports</span>
-            </div>
-          </a>
-        </li>
-        <li>
-          <a href="consultant" class="group">
-            <i class="bi bi-people group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-            <div>
-              <p class="text-base-content leading-4 group-hover:text-indigo-600">Consultants</p>
-              <span class="text-sm dark:text-slate-500">Manage Consultants</span>
-            </div>
-          </a>
-        </li>
-
-        <li>
-          <a href="job-seeker" class="group">
-            <i class="bi bi-people  group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-            <div>
-              <p class="leading-4 group-hover:text-indigo-600">Job Seekers</p>
-              <span class="text-sm dark:text-slate-500">Manage Job Seekers</span>
+              <span class="text-sm dark:text-slate-500">Place Appointments</span>
             </div>
           </a>
         </li>
       </ul>
       <div class="divider m-2"></div>
       <ul class="menu menu-vertical gap-2">
-        <li>
-          <a href="setting.html" class="group">
-            <i class="bi bi-gear group-hover:text-indigo-600 text-2xl w-8 h-8"></i>
-            <p class="text-base-content leading-4 group-hover:text-indigo-600">Settings</p>
-          </a>
-        </li>
         <li>
           <button class="group" type="submit" form="logout">
             <i
@@ -345,6 +275,11 @@
           class="select select-bordered w-full"
           name="consultant"
           id="consultant">
+          <option disabled selected></option>
+          <tag:forEach items="${consultants}" var="consultant">
+            <option data-country="${consultant.country}" data-job="${consultant.job}"
+                    value="${consultant.id}">${consultant.id} - ${consultant.firstName} ${consultant.lastName}</option>
+          </tag:forEach>
         </select>
         <label class="label">
           <span class="label-text-alt"></span>
@@ -398,7 +333,7 @@
   </form>
 </dialog>
 
-<form action="employee" method="post" id="logout" class="hidden">
+<form action="job-seeker" method="post" id="logout" class="hidden">
   <input type="hidden" name="actionType" value="LOGOUT"/>
 </form>
 
@@ -417,104 +352,5 @@
     })
   }
 </script>
-
-<tag:if test="${consultants!=null}">
-  <script defer>
-    const consultants = `
-        [
-          <tag:forEach var="consultant" items="${consultants}" varStatus="each">
-              {
-                "id":"${consultant.id}",
-                "firstName":"${consultant.firstName}",
-                "lastName":"${consultant.lastName}",
-                "job":"${consultant.job}",
-                "country":"${consultant.country}",
-                "availability":
-                [
-                  <tag:forEach var="availability" items="${consultant.availability}" varStatus="loop">
-                    {
-                      "id":"${availability.id}",
-                      "day":"${availability.day}",
-                      "startTime":"${availability.startTime}",
-                      "endTime":"${availability.endTime}"
-                    } <tag:if test="${!loop.last}">,</tag:if>
-                    </tag:forEach>
-                 ]
-              } <tag:if test="${!each.last}">,</tag:if>
-          </tag:forEach>
-          ]`;
-
-    let inputsWithConsultant, form;
-    document.addEventListener("DOMContentLoaded", () => {
-      form = document.getElementById('appointmentForm');
-      inputsWithConsultant = form.querySelectorAll(
-        `[name="date"],[name="time"],[name="country"],[name="job"]`
-      );
-
-      inputsWithConsultant.forEach(input => {
-        input.addEventListener('change', updateConsultant);
-      });
-
-    })
-
-    function checkAllConsultantRelatedInputsAvailable() {
-      return Array.from(inputsWithConsultant).every(input => {
-        if (input.tagName === 'INPUT') return input.value.trim().length > 0;
-        else if (input.tagName === 'SELECT') return input.selectedIndex !== -1;
-        else return false;
-      });
-    }
-
-    function updateConsultant() {
-      debugger;
-      const isAllExists = checkAllConsultantRelatedInputsAvailable();
-      if (!isAllExists) return false;
-
-      const filteredConsultants = JSON.parse(consultants).filter(consultant =>
-        filterConsultant(consultant)
-      ).filter(Boolean);
-
-      form.consultant.innerHTML =
-        "<option disabled selected></option>" +
-        filteredConsultants.map(
-          consultant =>
-            "<option value='" + consultant.id + "'>" + consultant.id + " " + consultant.firstName + " " + consultant.lastName + "</option>"
-        );
-    }
-
-    function filterConsultant(consultant) {
-      const job = form.querySelector('[name="job"]').value;
-      const country = form.querySelector('[name="country"]').value;
-      const appointmentTime = form.querySelector('[name="time"]').value;
-      const appointmentDate = form.querySelector('[name="date"]').value;
-
-
-      if (job && consultant.job.toLowerCase() !== job.toLowerCase()) return false;
-
-      if (country && consultant.country.toLowerCase() !== country.toLowerCase()) return false;
-
-      if (appointmentTime && appointmentDate) {
-        for (const availability of consultant.availability) {
-          const startTime = new Date(`2023-09-07 ` + availability.startTime);
-          const endTime = new Date(`2023-09-07 ` + availability.endTime);
-          const selectedTime = new Date(`2023-09-07 ` + appointmentTime);
-          const selectedDate = new Date(appointmentDate);
-
-          if (selectedDate.getDay() === dayMap.get(availability.day)) {
-            if (selectedTime >= startTime && selectedTime <= endTime) return true;
-          }
-        }
-        return false;
-      }
-
-      return consultant
-    }
-
-    const dayMap = new Map([["SUN", 0], ["MON", 1], ["TUE", 2], ["WED", 3], ["THU", 4], ["FRI", 5], ["SAT", 6]])
-
-
-  </script>
-</tag:if>
-
 </body>
 </html>

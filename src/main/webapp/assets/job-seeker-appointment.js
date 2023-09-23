@@ -1,10 +1,12 @@
 'use strict';
+
 import z from 'https://cdn.jsdelivr.net/npm/zod@3.22.2/+esm'
 import {
   clearErrors,
   extractDataFromForm,
   validateForm,
-  countries, parseJson
+  countries,
+  parseJson
 } from './index.js';
 
 document.getElementById('countryList').innerHTML = countries
@@ -14,10 +16,7 @@ document.getElementById('countryList').innerHTML = countries
 
 // consultant form
 const schema = z.object({
-  date: z
-    .string({required_error: 'Date is required.'})
-    .trim()
-    .nonempty('Date is required.'),
+  date: z.string().trim().nonempty('Date is required.'),
   time: z.string().trim().nonempty('Time is required.'),
   job: z.string().trim().nonempty('Job is required.'),
   country: z.enum(countries, {
@@ -38,19 +37,8 @@ const schema = z.object({
 
 const manageAppointmentForm = document.querySelector("#appointmentForm");
 manageAppointmentForm.addEventListener('submit', validateForm(schema));
-manageAppointmentForm.addEventListener('reset', event => {
-    clearErrors(event.target, extractDataFromForm(event.target));
-    const consultantSelect = manageAppointmentForm.consultant.parentElement.querySelector(".label-text-alt");
-    const jobSeekerSelect = manageAppointmentForm.jobSeeker.parentElement.querySelector(".label-text-alt");
-
-    manageAppointmentForm.consultant.classList.remove('input-error');
-    manageAppointmentForm.jobSeeker.classList.remove('input-error');
-
-    consultantSelect.classList.remove("text-error")
-    consultantSelect.textContent = ""
-    jobSeekerSelect.classList.remove("text-error")
-    jobSeekerSelect.textContent = ""
-  }
+manageAppointmentForm.addEventListener('reset', event =>
+  clearErrors(event.target, extractDataFromForm(event.target))
 );
 
 const manageJobSeekerFormDialog = document.getElementById('appointmentDialog');
@@ -91,12 +79,10 @@ document.querySelectorAll('[data-action="edit"]').forEach(edit => {
     manageAppointmentForm.time.value = record.dateTime.split("T").pop();
     manageAppointmentForm.job.value = record.job;
     manageAppointmentForm.country.value = record.country;
-    updateConsultant()
     manageAppointmentForm.consultant.value = record.consultantId;
     manageAppointmentForm.jobSeeker.value = record.jobSeekerId;
 
     manageAppointmentForm.actionType.value = 'UPDATE';
-
   });
 });
 

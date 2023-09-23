@@ -1,5 +1,5 @@
 package com.fasal.jobs.enums;
 
 public enum ActionType {
-  CREATE, UPDATE, DELETE, GET, REGISTER, LOGIN
+  CREATE, UPDATE, DELETE, GET, REGISTER, LOGIN, LOGOUT,
 }

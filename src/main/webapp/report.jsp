@@ -126,13 +126,15 @@
 
           <div id="report-container">
 
-            <div>
-              <button id="report-pdf-download" class="btn btn-secondary">Download</button>
-            </div>
 
             <section class="w-full">
+              <div class="flex justify-between items-center my-3">
+                <h2 class="font-semibold text-2xl">Report</h2>
+                <button id="report-pdf-download" class="btn btn-secondary">Download</button>
+              </div>
+
               <header class="px-5 py-4">
-                <h2 class="font-semibold text-xl">Report</h2>
+                <h3 class="font-semibold text-lg">Appointments</h3>
               </header>
 
               <div class="overflow-x-auto rounded-lg mx-auto bg-base-200">
