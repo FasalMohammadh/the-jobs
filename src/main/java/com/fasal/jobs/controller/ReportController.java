@@ -18,7 +18,7 @@ public class ReportController extends HttpServlet {
   String feedback;
 
   private AppointmentService getAppointmentService() {
-    return new AppointmentService();
+    return AppointmentService.getService();
   }
 
   private ConsultantService getConsultantService() {

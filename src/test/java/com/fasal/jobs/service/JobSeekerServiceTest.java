@@ -27,14 +27,14 @@ class JobSeekerServiceTest {
   }
 
   @Test
-  @Disabled
+
   @DisplayName("Testing whether it return a JobSeekerService instance without null")
   void getServiceTest() {
     assertNotNull(service, "getService() in JobSeekerService returned null.");
   }
 
   @Test
-  @Disabled
+
   @DisplayName("Testing whether JobSeekerService.create() return true on valid jobseeker object")
   void createTestNullJobSeeker() throws SQLException, ClassNotFoundException {
     boolean isCreated = service.create(jobSeeker);

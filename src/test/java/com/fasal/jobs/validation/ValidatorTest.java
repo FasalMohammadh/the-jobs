@@ -15,7 +15,6 @@ public class ValidatorTest {
     validator = new Validator();
   }
 
-
   @Test
   void testGetValidator() {
     Validator validator = Validator.getValidator();
